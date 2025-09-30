@@ -2,12 +2,23 @@
 const pseudo = useRoute().params.pseudo;
 const catches = ref([])
 const userCatches = ref([])
-
+let guestToken = null;
 onMounted(async () => {
+  try {
+    const response = await fetch('/api/token/guest'); // Nginx redirigera vers votre backend
+    const data = await response.json();
+    guestToken = data.token;
+  } catch (error) {
+    console.error("Impossible d'obtenir un token invité:", error);
+  }
+
   try {
     const res = await fetch(`/api/catches`, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${guestToken}`
+      }
     });
     if (!res.ok) throw new Error('Erreur API');
     catches.value = await res.json();

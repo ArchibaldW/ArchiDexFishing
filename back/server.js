@@ -6,6 +6,7 @@ require('dotenv').config();
 
 const userRoutes = require('./routes/userRoutes.js');
 const catchRoutes = require('./routes/catchRoutes.js');
+const authRoutes = require('./routes/authRoutes.js');
 const dsn = require('./utils/dsn.js')
 
 mongoose.set('strictQuery', true);
@@ -35,6 +36,7 @@ app.use(express.json());
 // Api routes
 app.use('/api/users', userRoutes);
 app.use('/api/catches', catchRoutes);
+app.use('/api/token', authRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Serveur lancé sur le port ${PORT}`));

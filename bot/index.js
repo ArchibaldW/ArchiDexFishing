@@ -1,6 +1,7 @@
 const TwitchService = require("./service/twitch/twitch-service");
 const TwitchTurpleService = require("./service/twitch/twitch-turple-service");
 const botWebSocket = require("./service/bot/botWebSocket.js");
+const { jwtDecode } = require('jwt-decode');
 
 (async () => {
   const twitchService = new TwitchService();
@@ -32,7 +33,58 @@ const botWebSocket = require("./service/bot/botWebSocket.js");
 
   botWebSocket.start();
 
+  // Variable pour stocker le token actuel
+  let apiToken = null;
+
+  // Fonction pour s'authentifier et obtenir un token
+  async function authenticateAndScheduleRefresh() {
+      console.log("Tentative d'authentification du bot...");
+      try {
+          const response = await fetch(`${process.env.API_URL}/api/token/bot`, {
+              method: 'POST',
+              headers: { 'x-bot-secret': process.env.BOT_API_SECRET }
+          });
+
+          if (!response.ok) {
+              throw new Error(`Échec de l'authentification: ${response.statusText}`);
+          }
+
+          const data = await response.json();
+          apiToken = data.token;
+          console.log("✅ Bot authentifié, nouveau token reçu !");
+
+          // Décode le token pour lire sa date d'expiration
+          const decodedToken = jwtDecode(apiToken);
+          const expirationTime = decodedToken.exp * 1000; // Convertir en millisecondes
+          const now = Date.now();
+          
+          // Calculons quand renouveler : à 80% de la durée de vie restante
+          const renewalTime = now + (expirationTime - now) * 0.8;
+
+          // Planifier la prochaine exécution
+          scheduleNextRefresh(renewalTime - now);
+
+      } catch (error) {
+          console.error("❌ Erreur critique lors de l'authentification:", error);
+          // En cas d'échec, on réessaie dans 1 minute
+          scheduleNextRefresh(60 * 1000); 
+      }
+  }
+
+  function scheduleNextRefresh(ms) {
+      setTimeout(authenticateAndScheduleRefresh, ms);
+      console.log(`Prochain renouvellement du token dans ${(ms / 1000 / 60).toFixed(2)} minutes.`);
+  }
+
+  // ---- Démarrage du bot ----
+  // Lancez le premier cycle d'authentification au démarrage
+  authenticateAndScheduleRefresh();
+
+
+  
+
   const fishingRegex = /^Félicitation @(.+?) tu as attrapé un (.+?) qui pèse (.+?) et vaut (.+?) de pognon! Tu as désormais (.+?) de pognon!/;
+
   const specialCases = [
     { "code": "0422e", "name": "Sancoki Mer Orient" },
     { "code": "0422o", "name": "Sancoki Mer Occident" },
@@ -55,7 +107,7 @@ const botWebSocket = require("./service/bot/botWebSocket.js");
   const specialCasesMap = new Map(specialCases.map(item => [item.name, item.code]));
   twitchService.addOnMessage(
     async (msg, context) => {
-      if (context.username === 'archibaldwirslayd') {
+      if (context.username === process.env.TWITCH_CHANNEL_NAME) {
         const match = msg.match(fishingRegex);
 
         if (match) {
@@ -92,7 +144,10 @@ const botWebSocket = require("./service/bot/botWebSocket.js");
                 'pseudo' : capturedUser,
                 'catch' : finalFish
               }),
-              headers: { 'Content-Type': 'application/json' }
+              headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiToken}`
+              }
             });
             if (!res.ok) throw new Error('Erreur API');
           } catch (error) {
