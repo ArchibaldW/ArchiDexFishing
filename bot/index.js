@@ -86,7 +86,7 @@ const botWebSocket = require("./service/bot/botWebSocket.js");
           }
 
           try {
-            const res = await fetch(`${process.env.API_URL}/users/catch`, {
+            const res = await fetch(`${process.env.API_URL}/api/users/catch`, {
               method: 'POST',
               body: JSON.stringify({
                 'pseudo' : capturedUser,

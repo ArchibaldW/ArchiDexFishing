@@ -33,8 +33,8 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 // Api routes
-app.use('/users', userRoutes);
-app.use('/catches', catchRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/catches', catchRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Serveur lancé sur le port ${PORT}`));

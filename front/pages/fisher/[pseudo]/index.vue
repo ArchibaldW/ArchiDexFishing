@@ -5,7 +5,7 @@ const userCatches = ref([])
 
 onMounted(async () => {
   try {
-    const res = await fetch(`http://localhost:5000/catches`, {
+    const res = await fetch(`/api/catches`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
     });
@@ -17,7 +17,7 @@ onMounted(async () => {
   }
 
   try {
-    const res = await fetch(`http://localhost:5000/users/${pseudo}`, {
+    const res = await fetch(`/api/users/${pseudo}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
     });
