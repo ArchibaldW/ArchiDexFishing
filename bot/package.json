@@ -1,0 +1,23 @@
+{
+  "name": "archibaldtwitchconnection",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch --env-file=./dev.env ./index.js",
+    "start": "node --env-file=./.env ./index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Archibald",
+  "license": "ISC",
+  "dependencies": {
+    "@twurple/api": "^7.1.0",
+    "@twurple/auth": "^7.1.0",
+    "@twurple/easy-bot": "^7.1.0",
+    "@twurple/eventsub-ws": "^7.1.0",
+    "express": "^4.19.2",
+    "tmi.js": "^1.8.5",
+    "twurple": "^1.0.0",
+    "websocket": "^1.0.35"
+  }
+}
