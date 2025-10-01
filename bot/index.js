@@ -40,7 +40,7 @@ const { jwtDecode } = require('jwt-decode');
   async function authenticateAndScheduleRefresh() {
       console.log("Tentative d'authentification du bot...");
       try {
-          const response = await fetch(`${process.env.API_URL}/api/token/bot`, {
+          const response = await fetch(`${process.env.API_URL}/api/auth/bot`, {
               method: 'POST',
               headers: { 'x-bot-secret': process.env.BOT_API_SECRET }
           });

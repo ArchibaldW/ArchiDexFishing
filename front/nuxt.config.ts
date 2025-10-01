@@ -9,4 +9,9 @@ export default defineNuxtConfig({
   build: {
     transpile: ['vuetify'],
   },
+  runtimeConfig: {
+    public: {
+      apiBaseUrl: process.env.API_URL || ''
+    }
+  }
 })

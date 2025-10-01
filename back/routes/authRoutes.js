@@ -5,6 +5,6 @@ const authCtrl = require("../controllers/auth.js");
 const router = express.Router();
 
 router.post('/bot', authCtrl.getBotJwt);
-router.get('/guest', authCtrl.getGuestJwt);
+router.get('/twitch/callback', authCtrl.getTwitchCallback)
 
 module.exports = router;

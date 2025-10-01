@@ -1,42 +1,28 @@
 <script setup>
-const pseudo = useRoute().params.pseudo;
+import { fisherService } from '~/_services';
+import { parse } from 'cookie-es';
+import { jwtDecode } from 'jwt-decode';
+
+const pseudo = ref(null)
 const catches = ref([])
 const userCatches = ref([])
-let guestToken = null;
+
 onMounted(async () => {
-  try {
-    const response = await fetch('/api/token/guest'); // Nginx redirigera vers votre backend
-    const data = await response.json();
-    guestToken = data.token;
-  } catch (error) {
-    console.error("Impossible d'obtenir un token invité:", error);
+  const cookies = parse(document.cookie);
+  const token = cookies.auth_token;
+  if (token) {
+    try {
+      const decodedToken = jwtDecode(token);
+
+      pseudo.value = decodedToken.username;
+    } catch (error) {
+      console.error("Impossible de décoder le JWT:", error);
+    }
   }
 
-  try {
-    const res = await fetch(`/api/catches`, {
-      method: 'GET',
-      headers: { 
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${guestToken}`
-      }
-    });
-    if (!res.ok) throw new Error('Erreur API');
-    catches.value = await res.json();
-  }
-  catch (error){
-    console.log(error)
-  }
+  catches.value = await fisherService.getCatches();
 
-  try {
-    const res = await fetch(`/api/users/${pseudo}`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
-    });
-    if (!res.ok) throw new Error('Erreur API');
-    userCatches.value = await res.json();
-  } catch (error) {
-    console.error(error);
-  }
+  userCatches.value = await fisherService.getUserCatches(pseudo.value);
 });
 
 const normalSet = computed(() => {
