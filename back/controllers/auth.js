@@ -23,7 +23,6 @@ exports.getTwitchCallback = async (req, res) => {
     }
 
     try {
-        console.log(process.env.API_URL + '/api/auth/twitch/callback')
         const tokenResponse = await fetch('https://id.twitch.tv/oauth2/token', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -36,7 +35,6 @@ exports.getTwitchCallback = async (req, res) => {
             })
         });
         const tokenData = await tokenResponse.json();
-        console.log(tokenData)
         const accessToken = tokenData.access_token;
 
         // c. Utiliser l'access_token pour récupérer les infos de l'utilisateur
