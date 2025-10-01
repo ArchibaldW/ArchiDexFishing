@@ -11,8 +11,11 @@ exports.authenticateToken = (req, res, next) => {
         return res.status(401).json({ message: "Accès non autorisé : token manquant." });
     }
 
+    console.log("test1")
+
     // 3. Vérifier la validité du token
     jwt.verify(token, process.env.JWT_SECRET, (err, userPayload) => {
+        console.log("test2")
         if (err) {
             // Ex: Token expiré ou signature invalide
             return res.status(403).json({ message: "Accès interdit : token invalide." });
@@ -22,6 +25,8 @@ exports.authenticateToken = (req, res, next) => {
         req.user = userPayload;
         
         // 5. On laisse la requête continuer vers sa destination
+        console.log("test3")
+
         next();
     });
 }
