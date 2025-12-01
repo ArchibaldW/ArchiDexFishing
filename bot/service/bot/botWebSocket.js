@@ -19,7 +19,7 @@ function sendMsgDebug(response) {
 module.exports.start = () => {
   webSocketOpen = new WebsocketService(
     "WS    🤖:" + port,
-    true,
+    false,
     () => {}
   );
   webSocketOpen.start(serverSpeech);
