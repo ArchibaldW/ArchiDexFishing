@@ -25,10 +25,14 @@ class TwitchTurpleService {
     this.channel = channel;
     this.userId = userId;
 
-    // Configuration de l'authentification qui se rafraîchit automatiquement
     this.authProvider = new RefreshingAuthProvider({
       clientId,
       clientSecret,
+      onRefresh: async (userId, newTokenData) => {
+        console.log('🔄 NOUVEAUX TOKENS TWITCH GÉNÉRÉS (Mets à jour ton .env si besoin) :');
+        console.log(`ACCESS_TOKEN=${newTokenData.accessToken}`);
+        console.log(`REFRESH_TOKEN=${newTokenData.refreshToken}`);
+      }
     });
 
     await this.authProvider.addUserForToken(
