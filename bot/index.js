@@ -86,18 +86,47 @@ const { jwtDecode } = require('jwt-decode');
   const fishingRegex = /^Félicitation @(.+?) tu as attrapé un (.+?) qui pèse (.+?) et vaut (.+?) de pognon! Tu as désormais (.+?) de pognon!/;
 
   const specialCases = [
+    // 1G
+    { "code": "0009m", "name": "Méga-Tortank" },
+    { "code": "0079g", "name": "Ramoloss de Galar" },
+    { "code": "0080m", "name": "Méga-Flagadoss" },
+    { "code": "0080g", "name": "Flagadoss de Galar" },
+    { "code": "0130m", "name": "Méga-Leviator" },
+
+    // 2G
+    { "code": "0194p", "name": "Axoloto de Paldea" },
+    { "code": "0199g", "name": "Roigada de Galar" },
+    { "code": "0222g", "name": "Corayon de Galar" },
+
+    // 3G
+    { "code": "0260m", "name": "Méga-Laggron" },
+    { "code": "0319m", "name": "Méga-Sharpedo" },
+    { "code": "0382p", "name": "Primo-Kyogre" },
+
+    // 4G
     { "code": "0422e", "name": "Sancoki Mer Orient" },
     { "code": "0422o", "name": "Sancoki Mer Occident" },
     { "code": "0423e", "name": "Tritosor Mer Orient" },
     { "code": "0423o", "name": "Tritosor Mer Occident" },
+
+    // 5G
     { "code": "0550b", "name": "Bargantua Bleu" },
     { "code": "0550r", "name": "Bargantua Rouge" },
     { "code": "0592f", "name": "Viskuse Femelle" },
     { "code": "0592m", "name": "Viskuse Mâle" },
     { "code": "0593f", "name": "Moyade Femelle" },
     { "code": "0593m", "name": "Moyade Mâle" },
+
+    // 7G
     { "code": "0746b", "name": "Froussardine en banc" },
+
+    // 8G
     { "code": "0845g", "name": "Nigosier Gobe-chu" },
+    { "code": "0845h", "name": "Nigosier Gobe-tout" },
+    { "code": "0875g", "name": "Bekaglaçon Tête de Gel" },
+    { "code": "0875t", "name": "Bekaglaçon Tête Dégel" },
+
+    // 9G
     { "code": "0964f", "name": "Superdofin forme Super" },
     { "code": "0978c", "name": "Nigirigon forme Courbée" },
     { "code": "0978a", "name": "Nigirigon forme Affalée" },
