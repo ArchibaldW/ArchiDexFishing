@@ -84,9 +84,11 @@ const progress = computed(() => {
           v-if="showNotCaught || !showNotCaught && ((!showShiny && catchItem.caughtNormal) || (showShiny && catchItem.caughtShiny))"
           :key="index"
           class="pokecards__pokecard"
-          :class="{
-            'pokemon-caught' : !showShiny ? catchItem.caughtNormal : catchItem.caughtShiny
-          }"
+          :class="[
+            { 'pokemon-caught': !showShiny ? catchItem.caughtNormal : catchItem.caughtShiny },
+            `type1-${catchItem.type1}`,
+            catchItem.type2 ? `type2-${catchItem.type2}` : null
+          ]"
         >
             <v-card-title class="pokecards__pokecard__title">#{{codeOnlyNumber(catchItem.code)}} - {{ catchItem.caughtNormal || catchItem.caughtShiny ? catchItem.name : '???' }}</v-card-title>
             <img  class="pokecards__pokecard__image" :src="`/assets/${catchItem.code}${showShiny ? 's' : ''}.png`" />
@@ -166,11 +168,26 @@ const progress = computed(() => {
     &.pokemon-caught{
       .pokecards__pokecard {
         &__title {
-          background-color : #2481EF;
+          background: linear-gradient(135deg, var(--bg-type1) 25%, var(--bg-type2) 75%);
+          color: white;
         }
-
         &__image {
           filter: unset;
+        }
+      }
+
+      @each $type, $color in $type-colors {
+        &.type1-#{$type} {
+          .pokecards__pokecard__title {
+            --bg-type1: #{$color};
+            --bg-type2: #{$color};
+          }
+        }
+        
+        &.type2-#{$type} {
+          .pokecards__pokecard__title {
+            --bg-type2: #{$color} !important;
+          }
         }
       }
     }

@@ -1,0 +1,39 @@
+$steel: #60A2B9;
+$fighting: #FF8100;
+$dragon: #4F60E2;
+$water: #2481EF;
+$electric: #FAC100;
+$fairy: #EF70EF;
+$fire: #E72324;
+$ice: #3DD9FF;
+$bug: #92A212;
+$normal: #A0A2A0;
+$grass: #3DA224;
+$poison: #923FCC;
+$psychic: #EF3F7A;
+$rock: #B0AA82;
+$ground: #92501B;
+$ghost: #703F70;
+$dark: #4F3F3D;
+$flying: #82BAEF;
+
+$type-colors: (
+    steel: $steel,
+    fighting: $fighting,
+    dragon: $dragon,
+    water: $water,
+    electric: $electric,
+    fairy: $fairy,
+    fire: $fire,
+    ice: $ice,
+    bug: $bug,
+    normal: $normal,
+    grass: $grass,
+    poison: $poison,
+    psychic: $psychic,
+    rock: $rock,
+    ground: $ground,
+    ghost: $ghost,
+    dark: $dark,
+    flying: $flying
+);

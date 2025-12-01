@@ -3,7 +3,7 @@
   import { useCommonStore } from '~/store';
  
   const commonStore = useCommonStore()
-  const redirectUrl = `https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=vgmhmvzkrzart4tbyqr0qntw0t9e7i&redirect_uri=${useRuntimeConfig().public.apiRedirectUrl}/api/auth/twitch/callback&scope=user:read:email`
+  const redirectUrl = `https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=${useRuntimeConfig().public.clientId}&redirect_uri=${useRuntimeConfig().public.apiRedirectUrl}/api/auth/twitch/callback&scope=user:read:email`
 </script>
 
 

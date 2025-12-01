@@ -9,10 +9,21 @@ export default defineNuxtConfig({
   build: {
     transpile: ['vuetify'],
   },
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          // Replace with the actual path to your variables file
+          additionalData: '@use "~/scss/_variables.scss" as *;'
+        }
+      }
+    }
+  },
   runtimeConfig: {
     public: {
       apiBaseUrl: process.env.API_URL || '',
-      apiRedirectUrl: process.env.REDIRECT_API_URL || ''
+      apiRedirectUrl: process.env.REDIRECT_API_URL || '',
+      clientId: process.env.CLIENT_ID || ''
     }
   }
 })
