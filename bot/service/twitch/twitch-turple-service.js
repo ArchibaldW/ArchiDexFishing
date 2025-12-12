@@ -1,6 +1,9 @@
 const { Bot } = require("@twurple/easy-bot");
 const { RefreshingAuthProvider } = require("@twurple/auth");
 const { ApiClient } = require("@twurple/api");
+const fs = require('fs');
+
+const TOKEN_FILE = './tokens.json';
 
 class TwitchTurpleService {
   constructor() {
@@ -25,25 +28,44 @@ class TwitchTurpleService {
     this.channel = channel;
     this.userId = userId;
 
+    let tokenData = null;
+
+    if (fs.existsSync(TOKEN_FILE)) {
+        try {
+            tokenData = JSON.parse(fs.readFileSync(TOKEN_FILE, 'UTF-8'));
+            console.log("📂 Tokens chargés depuis tokens.json (Sauvegarde locale)");
+        } catch(e) {
+            console.error("Erreur lecture tokens.json, retour au .env");
+        }
+    }
+
+    if (!tokenData) {
+        console.log("⚠️ Pas de tokens.json, utilisation des variables d'environnement (.env)");
+        tokenData = {
+            accessToken: accessToken,
+            refreshToken: refreshToken,
+            expiresIn: 0,
+            obtainmentTimestamp: 0
+        };
+    }
+
     this.authProvider = new RefreshingAuthProvider({
       clientId,
       clientSecret,
       onRefresh: async (userId, newTokenData) => {
-        console.log('🔄 NOUVEAUX TOKENS TWITCH GÉNÉRÉS (Mets à jour ton .env si besoin) :');
-        console.log(`ACCESS_TOKEN=${newTokenData.accessToken}`);
-        console.log(`REFRESH_TOKEN=${newTokenData.refreshToken}`);
+        const dataToSave = {
+            accessToken: newTokenData.accessToken,
+            refreshToken: newTokenData.refreshToken,
+            expiresIn: newTokenData.expiresIn,
+            obtainmentTimestamp: newTokenData.obtainmentTimestamp
+        };
+        fs.writeFileSync(TOKEN_FILE, JSON.stringify(dataToSave, null, 4), 'UTF-8');
+        console.log("💾 Tokens rafraîchis et sauvegardés dans tokens.json !");
       }
     });
 
     await this.authProvider.addUserForToken(
-      {
-        accessToken,
-        refreshToken,
-        expiresIn: 0, // Laisse la librairie gérer l'expiration
-        obtainmentTimestamp: 0,
-        scopes : ["chat:read", "chat:edit"]
-      },
-      // Le strict minimum de scopes pour lire et écrire dans le chat
+      tokenData,
       ['chat']
     );
 
