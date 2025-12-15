@@ -2,8 +2,9 @@ const { Bot } = require("@twurple/easy-bot");
 const { RefreshingAuthProvider } = require("@twurple/auth");
 const { ApiClient } = require("@twurple/api");
 const fs = require('fs');
+const path = require('path');
 
-const TOKEN_FILE = './tokens.json';
+const TOKEN_FILE = path.join(__dirname, 'tokens.json')
 
 class TwitchTurpleService {
   constructor() {
@@ -66,7 +67,7 @@ class TwitchTurpleService {
 
     await this.authProvider.addUserForToken(
       tokenData,
-      ['chat']
+      ['chat:read', 'chat:edit']
     );
 
     // Initialisation du client d'API pour d'éventuels appels simples
