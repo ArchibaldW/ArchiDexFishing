@@ -48,6 +48,13 @@ class TwitchTurpleService {
             expiresIn: 0,
             obtainmentTimestamp: 0
         };
+
+        try {
+            fs.writeFileSync(TOKEN_FILE, JSON.stringify(tokenData, null, 4), 'UTF-8');
+            console.log("💾 Création initiale du fichier tokens.json avec les données du .env");
+        } catch (err) {
+            console.error("❌ Impossible de créer tokens.json au démarrage", err);
+        }
     }
 
     this.authProvider = new RefreshingAuthProvider({
