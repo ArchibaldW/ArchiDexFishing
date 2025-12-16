@@ -4,20 +4,8 @@ const botWebSocket = require("./service/bot/botWebSocket.js");
 const { jwtDecode } = require('jwt-decode');
 
 (async () => {
-  const twitchService = new TwitchService();
-  await twitchService.start(
-    process.env.TWITCH_BOT_USERNAME,
-    process.env.TWITCH_OAUTH_TOKEN,
-    process.env.TWITCH_CHANNEL_NAME
-  );
-
-  console.log(
-    "TwitchService → Track chat from: https://twitch.tv/" +
-      process.env.TWITCH_CHANNEL_NAME
-  );
-
   const twitchTurpleService = new TwitchTurpleService();
-  await twitchTurpleService.start(
+  const freshAccessToken = await twitchTurpleService.start(
     process.env.TWITCH_USER_ID,
     process.env.TWITCH_CLIENT_ID,
     process.env.TWITCH_CLIENT_SECRET,
@@ -29,6 +17,20 @@ const { jwtDecode } = require('jwt-decode');
   console.log(
     "TwitchService → Track chat from: from: https://twitch.tv/" +
       process.env.TWITCH_BOT_USERNAME
+  );
+
+  console.log(freshAccessToken)
+
+  const twitchService = new TwitchService();
+  await twitchService.start(
+    process.env.TWITCH_BOT_USERNAME,
+    `oauth:${freshAccessToken}`,
+    process.env.TWITCH_CHANNEL_NAME
+  );
+
+  console.log(
+    "TwitchService → Track chat from: https://twitch.tv/" +
+      process.env.TWITCH_CHANNEL_NAME
   );
 
   botWebSocket.start();

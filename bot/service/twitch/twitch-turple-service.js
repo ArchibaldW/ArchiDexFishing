@@ -89,6 +89,9 @@ class TwitchTurpleService {
     });
 
     console.log(`✅ TwitchTurpleService : Bot prêt sur la chaîne #${this.channel}`);
+
+    const currentToken = await this.authProvider.getAccessTokenForUser(this.userId);
+    return currentToken ? currentToken.accessToken : accessToken;
   };
 
   /**
