@@ -19,8 +19,6 @@ const { jwtDecode } = require('jwt-decode');
       process.env.TWITCH_BOT_USERNAME
   );
 
-  console.log(freshAccessToken)
-
   const twitchService = new TwitchService();
   await twitchService.start(
     process.env.TWITCH_BOT_USERNAME,
