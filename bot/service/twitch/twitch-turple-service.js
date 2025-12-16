@@ -74,7 +74,7 @@ class TwitchTurpleService {
 
     await this.authProvider.addUserForToken(
       tokenData,
-      ['chat:read', 'chat:edit']
+      ['chat']
     );
 
     // Initialisation du client d'API pour d'éventuels appels simples
