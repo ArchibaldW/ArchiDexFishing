@@ -1,28 +1,22 @@
 <script setup>
 import { fisherService } from '~/_services';
-import { parse } from 'cookie-es';
-import { jwtDecode } from 'jwt-decode';
 
-const pseudo = ref(null)
+const props = defineProps({
+  pseudo: {
+    type: String,
+    required: true
+  },
+});
+
+const pseudo = toRef(props, 'pseudo');
 const catches = ref([])
+const ready = ref(false)
 const userCatches = ref([])
 
-onMounted(async () => {
-  const cookies = parse(document.cookie);
-  const token = cookies.auth_token;
-  if (token) {
-    try {
-      const decodedToken = jwtDecode(token);
-
-      pseudo.value = decodedToken.username;
-    } catch (error) {
-      console.error("Impossible de décoder le JWT:", error);
-    }
-  }
-
+onBeforeMount(async () => {
   catches.value = await fisherService.getCatches();
-
   userCatches.value = await fisherService.getUserCatches(pseudo.value);
+  ready.value = true
 });
 
 const normalSet = computed(() => {
@@ -60,41 +54,41 @@ const progress = computed(() => {
 
 <template>
   <div class="container">
-    <div class="title">Pokédex de {{ pseudo }}</div>
-    <div class="filters">
-      <v-checkbox 
-        v-model="showShiny" 
-        label="Shiny?"
-        density="flat"
-        hide-details
-      />
-      <v-checkbox 
-        v-model="showNotCaught" 
-        label="Voir non capturés"
-        density="flat"
-        hide-details
-      />
-    </div>
-    <v-progress-linear :model-value="progress" class="progress">
-      {{showShiny ? shinySet.size : normalSet.size }} / {{ pokemonsWithStatus.length }} ({{ progress.toFixed(2) }}%)
-    </v-progress-linear>
-    <div class="pokecards">
-      <template v-for="(catchItem, index) in pokemonsWithStatus">
-        <v-card 
-          v-if="showNotCaught || !showNotCaught && ((!showShiny && catchItem.caughtNormal) || (showShiny && catchItem.caughtShiny))"
-          :key="index"
-          class="pokecards__pokecard"
-          :class="[
-            { 'pokemon-caught': !showShiny ? catchItem.caughtNormal : catchItem.caughtShiny },
-            `type1-${catchItem.type1}`,
-            catchItem.type2 ? `type2-${catchItem.type2}` : null
-          ]"
-        >
-            <v-card-title class="pokecards__pokecard__title">#{{codeOnlyNumber(catchItem.code)}} - {{ catchItem.caughtNormal || catchItem.caughtShiny ? catchItem.name : '???' }}</v-card-title>
-            <img  class="pokecards__pokecard__image" :src="`/assets/${catchItem.code}${showShiny ? 's' : ''}.png`" />
-        </v-card>
-      </template>
-    </div>
+    <template v-if="ready">
+      <div class="title">Pokédex de {{ pseudo }}</div>
+      <div class="filters">
+        <v-checkbox 
+          v-model="showShiny" 
+          label="Shiny?"
+          hide-details
+        />
+        <v-checkbox 
+          v-model="showNotCaught" 
+          label="Voir non capturés"
+          hide-details
+        />
+      </div>
+      <v-progress-linear :model-value="progress" class="progress">
+        {{showShiny ? shinySet.size : normalSet.size }} / {{ pokemonsWithStatus.length }} ({{ progress.toFixed(2) }}%)
+      </v-progress-linear>
+      <div class="pokecards">
+        <template v-for="(catchItem, index) in pokemonsWithStatus">
+          <v-card 
+            v-if="showNotCaught || !showNotCaught && ((!showShiny && catchItem.caughtNormal) || (showShiny && catchItem.caughtShiny))"
+            :key="index"
+            class="pokecards__pokecard"
+            :class="[
+              { 'pokemon-caught': !showShiny ? catchItem.caughtNormal : catchItem.caughtShiny },
+              `type1-${catchItem.type1}`,
+              catchItem.type2 ? `type2-${catchItem.type2}` : null
+            ]"
+          >
+              <v-card-title class="pokecards__pokecard__title">#{{codeOnlyNumber(catchItem.code)}} - {{ catchItem.caughtNormal || catchItem.caughtShiny ? catchItem.name : '???' }}</v-card-title>
+              <img  class="pokecards__pokecard__image" :src="`/assets/${catchItem.code}${showShiny ? 's' : ''}.png`" />
+          </v-card>
+        </template>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -132,14 +126,10 @@ const progress = computed(() => {
 }
 
 .pokecards {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  row-gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
   &__pokecard{
-    width: 240px;
-    max-width: 240px;
     display: flex;
     align-items: center;
     flex-direction: column;

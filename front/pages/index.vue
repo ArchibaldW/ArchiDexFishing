@@ -1,22 +1,24 @@
 <script setup>
-  import FisherView from '~/components/FisherView.vue';
-  import { useCommonStore } from '~/store';
+  import { useUserStore } from '~/store';
  
-  const commonStore = useCommonStore()
+  const userStore = useUserStore()
+  const { user } = storeToRefs(userStore)
+
   const redirectUrl = `https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=${useRuntimeConfig().public.clientId}&redirect_uri=${useRuntimeConfig().public.apiRedirectUrl}/api/auth/twitch/callback&scope=user:read:email`
 </script>
 
 
 <template>
   <div>
-    <template v-if="!commonStore.token">
-      <h1>Bienvenue sur l’appli Fishing</h1>
+    <div v-if="!user">
+      <h1>Bienvenue chez les Evolis Sauvages mais gentils</h1>
       <v-btn :href="redirectUrl">
         Se connecter avec Twitch
       </v-btn>
-    </template>
-    <template v-else>
-      <FisherView />
-    </template>
+    </div>
+    <div v-else>
+        Bienveue {{ user.username }}
+        <v-btn to="/fishing">Je veux voir mon pokedex</v-btn>
+    </div>
   </div>
 </template>

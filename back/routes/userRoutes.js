@@ -4,7 +4,8 @@ const { authenticateToken } = require('../middleware/authenticateToken');
 
 const router = express.Router();
 
-router.get("/:pseudo", authenticateToken, userCtrl.getUserCatches);
+router.get("/catches", authenticateToken, userCtrl.getUserCatches);
+router.get('/statistics', authenticateToken, userCtrl.getUserStatistics)
 router.post("/catch", authenticateToken, userCtrl.addUserCatch)
 
 module.exports = router;
