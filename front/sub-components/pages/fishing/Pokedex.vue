@@ -81,6 +81,11 @@ const showNotCaught = ref(true)
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 20px;
+
+  @media (max-width: 768px){
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
   &__pokecard{
     display: flex;
     align-items: center;
@@ -97,6 +102,10 @@ const showNotCaught = ref(true)
       align-items: center;
       justify-content: center;
       text-align: center;
+
+      @media (max-width: 768px){
+        font-size: 16px;
+      }
     }
 
     &__image {
@@ -105,6 +114,10 @@ const showNotCaught = ref(true)
       object-fit: contain;
       width: 100%;
       filter: brightness(0) invert(0);
+
+      @media (max-width: 768px){
+        height: 150px;
+      }
     }
 
     &.pokemon-caught{
