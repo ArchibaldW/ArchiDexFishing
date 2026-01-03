@@ -1,155 +1,210 @@
-<script setup>
+d<script setup>
 import { fisherService } from '~/_services';
+import { Tag, Type } from '~/_helpers';
 
-const props = defineProps({
-  pseudo: {
-    type: String,
-    required: true
-  },
-});
-
-const pseudo = toRef(props, 'pseudo');
-
-const catches = ref([])
-const userCatches = ref([])
+const stastistics = ref({})
 const ready = ref(false)
 
 onBeforeMount(async () => {
-    catches.value = await fisherService.getCatches();
-    userCatches.value = await fisherService.getUserCatches(pseudo.value);
+    stastistics.value = await fisherService.getUserStatistics();
     ready.value = true
 });
 
-const normalSet = computed(() => {
-  return new Set(userCatches.value.filter(c => !c.shiny).map(c => c.code));
+const globalNormalProgress = computed(() => {
+  return stastistics.value && stastistics.value.global ? 100*stastistics.value.global.caughtNormal/stastistics.value.global.total : 0
 })
 
-const shinySet = computed(() => {
-  return new Set(userCatches.value.filter(c => c.shiny).map(c => c.code));
-})
-
-const pokemonsWithStatus = computed(() => {
-  return catches.value.map(
-    p => (
-      {
-        ...p,
-        caughtNormal: normalSet.value.has(p.code),
-        caughtShiny: shinySet.value.has(p.code)
-      }
-    )
-  );
-})
-
-function codeOnlyNumber(code){
-  const match = code.match(/^(\d{4})/);
-  return match ? match[1] : code;
-}
-
-const showShiny = ref(false)
-const showNotCaught = ref(true)
-
-const progress = computed(() => {
-  return showShiny.value ? 100*shinySet.value.size / pokemonsWithStatus.value.length : 100*normalSet.value.size / pokemonsWithStatus.value.length
+const globalShinyProgress = computed(() => {
+  return stastistics.value && stastistics.value.global ? 100*stastistics.value.global.caughtShiny/stastistics.value.global.total : 0
 })
 </script>
 
 <template>
-  <div class="container">
+  <div class="statistics">
+    <h1 class="statistics__title">Tes statistiques avancées</h1>
     <template v-if="ready">
-      EN CONSTRUCTION
+      <h2 class="statistics__subtitle">Progression globale</h2>
+      <div class="statistics__global">
+          <v-progress-linear :model-value="globalNormalProgress" class="statistics__global__progress statistics__global__progress--normal">
+            Normal : {{stastistics.global.caughtNormal }} / {{ stastistics.global.total }} ({{ globalNormalProgress.toFixed(2) }}%)
+          </v-progress-linear>
+          <v-progress-linear :model-value="globalShinyProgress" class="statistics__global__progress statistics__global__progress--shiny">
+            Shiny : {{stastistics.global.caughtShiny }} / {{ stastistics.global.total }} ({{ globalShinyProgress.toFixed(2) }}%)
+          </v-progress-linear>
+      </div>
+
+      <h2 class="statistics__subtitle">Par génération</h2>
+      <div class="statistics__category">
+        <v-card class="statistics__category__card" v-for="genData of stastistics.generations" :key="genData.gen">
+          <h3>Génération {{ genData.gen }}</h3>
+          <div class="statistics__category__card__details">
+            <v-progress-circular
+              class="statistics__category__card__details__progress statistics__category__card__details__progress--normal"
+              :model-value="genData.caughtNormal*100 / genData.total"
+              :rotate="360"
+              :size="100"
+              :width="15"
+            > 
+              Normal
+              <br>
+              {{ genData.caughtNormal  }} / {{ genData.total }}
+            </v-progress-circular>
+            <v-progress-circular
+              class="statistics__category__card__details__progress statistics__category__card__details__progress--shiny"
+              :model-value="genData.caughtShiny*100 / genData.total"
+              :rotate="360"
+              :size="100"
+              :width="15"
+            >
+              Shiny
+              <br>
+              {{ genData.caughtShiny  }} / {{ genData.total }}
+            </v-progress-circular>
+          </div>
+        </v-card>
+      </div>
+
+      <h2 class="statistics__subtitle">Par types</h2>
+      <div class="statistics__category">
+        <v-card class="statistics__category__card" v-for="typeData of stastistics.types" :key="typeData.type">
+          <h3>{{ Type[typeData.type] }}</h3>
+          <div class="statistics__category__card__details">
+            <v-progress-circular
+              class="statistics__category__card__details__progress statistics__category__card__details__progress--normal"
+              :model-value="typeData.caughtNormal*100 / typeData.total"
+              :rotate="360"
+              :size="100"
+              :width="15"
+            >
+              Normal
+              <br>
+              {{ typeData.caughtNormal  }} / {{ typeData.total }}
+            </v-progress-circular>
+            <v-progress-circular
+              class="statistics__category__card__details__progress statistics__category__card__details__progress--shiny"
+              :model-value="typeData.caughtShiny*100 / typeData.total"
+              :rotate="360"
+              :size="100"
+              :width="15"
+            >
+              Shiny
+              <br>
+              {{ typeData.caughtShiny  }} / {{ typeData.total }}
+            </v-progress-circular>
+          </div>
+        </v-card>
+      </div>
+
+      <h2 class="statistics__subtitle">Par tags</h2>
+      <div class="statistics__category">
+        <v-card class="statistics__category__card" v-for="tagsData of stastistics.tags" :key="tagsData.tag">
+          <h3>{{ Tag[tagsData.tag] }}</h3>
+          <div class="statistics__category__card__details">
+            <v-progress-circular
+              class="statistics__category__card__details__progress statistics__category__card__details__progress--normal"
+              :model-value="tagsData.caughtNormal*100 / tagsData.total"
+              :rotate="360"
+              :size="100"
+              :width="15"
+            >
+              Normal
+              <br>
+              {{ tagsData.caughtNormal  }} / {{ tagsData.total }}
+            </v-progress-circular>
+            <v-progress-circular
+              class="statistics__category__card__details__progress statistics__category__card__details__progress--shiny"
+              :model-value="tagsData.caughtShiny*100 / tagsData.total"
+              :rotate="360"
+              :size="100"
+              :width="15"
+            >
+              Shiny
+              <br>
+              {{ tagsData.caughtShiny  }} / {{ tagsData.total }}
+            </v-progress-circular>
+          </div>
+        </v-card>
+      </div>
     </template>
   </div>
 </template>
 
 <style scoped lang="scss">
-.container {
+.statistics {
   padding: 10px;
-}
-
-.title {
-  width: fit-content;
-  margin: auto;
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 10px;
-}
-
-.filters {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 10px;
-}
-
-.progress {
-  margin-bottom: 10px;
-  border-radius: 10px;
-  color:#2481EF;
-  height:25px !important;
-  width: calc(100% - 20px);
-  border: 2px solid black;
-
-  :deep(.v-progress-linear__content) {
-    color: black;
+  &__title {
+    width: fit-content;
+    margin: auto;
+    font-size: 30px;
+    font-weight: 800;
   }
-}
 
-.pokecards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 20px;
-  &__pokecard{
+  &__subtitle{
+    width: fit-content;
+    margin: 30px auto 5px;
+    font-size: 24px;
+    font-weight: 600;
+  }
+
+  &__global {
+    width: 100%;
     display: flex;
-    align-items: center;
-    flex-direction: column;
-    border-radius: 20px;
+    gap: 20px;
 
-    &__title {
-      background-color: grey;
-      color: white;
-      width: 100%;
-      white-space: break-spaces;
-      height: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
+    &__progress {
+      border-radius: 16px;
+      height: 25px !important;
+      border: 2px solid black;
 
-    &__image {
-      padding: 10px;
-      height: 240px;
-      object-fit: contain;
-      width: 100%;
-      filter: brightness(0) invert(0);
-    }
-
-    &.pokemon-caught{
-      .pokecards__pokecard {
-        &__title {
-          background: linear-gradient(135deg, var(--bg-type1) 25%, var(--bg-type2) 75%);
-          color: white;
-        }
-        &__image {
-          filter: unset;
-        }
+      :deep(.v-progress-linear__content) {
+        color: black;
+      }
+      
+      &--normal{
+        color:blue;
       }
 
-      @each $type, $color in $type-colors {
-        &.type1-#{$type} {
-          .pokecards__pokecard__title {
-            --bg-type1: #{$color};
-            --bg-type2: #{$color};
-          }
+      &--shiny{
+        color: red;
+      }
+    }
+  }
+
+  &__category{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+
+    &__card{
+      border: 2px solid black;
+      padding: 20px 30px;
+      text-align: center;
+      border-radius: 16px;
+
+      &__details {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        gap: 30px;
+
+        :deep(.v-progress-circular__content){
+          font-size: 11px;
+          font-weight: 600;
+          display: flex;
+          flex-direction: column;
         }
-        
-        &.type2-#{$type} {
-          .pokecards__pokecard__title {
-            --bg-type2: #{$color} !important;
+
+        &__progress{
+          &--normal{
+            color: blue;
+          }
+          &--shiny{
+            color: red;
           }
         }
       }
     }
   }
 }
+
 </style>

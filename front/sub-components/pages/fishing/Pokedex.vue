@@ -1,43 +1,13 @@
 <script setup>
 import { fisherService } from '~/_services';
 
-const props = defineProps({
-  pseudo: {
-    type: String,
-    required: true
-  },
-});
-
-const pseudo = toRef(props, 'pseudo');
-const catches = ref([])
+const pokedex = ref([])
 const ready = ref(false)
-const userCatches = ref([])
 
 onBeforeMount(async () => {
-  catches.value = await fisherService.getCatches();
-  userCatches.value = await fisherService.getUserCatches(pseudo.value);
+  pokedex.value = await fisherService.getUserPokedex();
   ready.value = true
 });
-
-const normalSet = computed(() => {
-  return new Set(userCatches.value.filter(c => !c.shiny).map(c => c.code));
-})
-
-const shinySet = computed(() => {
-  return new Set(userCatches.value.filter(c => c.shiny).map(c => c.code));
-})
-
-const pokemonsWithStatus = computed(() => {
-  return catches.value.map(
-    p => (
-      {
-        ...p,
-        caughtNormal: normalSet.value.has(p.code),
-        caughtShiny: shinySet.value.has(p.code)
-      }
-    )
-  );
-})
 
 function codeOnlyNumber(code){
   const match = code.match(/^(\d{4})/);
@@ -46,33 +16,28 @@ function codeOnlyNumber(code){
 
 const showShiny = ref(false)
 const showNotCaught = ref(true)
-
-const progress = computed(() => {
-  return showShiny.value ? 100*shinySet.value.size / pokemonsWithStatus.value.length : 100*normalSet.value.size / pokemonsWithStatus.value.length
-})
 </script>
 
 <template>
   <div class="container">
+    <h1 class="title">Ton Pokedex</h1>
     <template v-if="ready">
-      <div class="title">Pokédex de {{ pseudo }}</div>
       <div class="filters">
         <v-checkbox 
           v-model="showShiny" 
           label="Shiny?"
           hide-details
+          density="compact"
         />
         <v-checkbox 
           v-model="showNotCaught" 
           label="Voir non capturés"
           hide-details
+          density="compact"
         />
       </div>
-      <v-progress-linear :model-value="progress" class="progress">
-        {{showShiny ? shinySet.size : normalSet.size }} / {{ pokemonsWithStatus.length }} ({{ progress.toFixed(2) }}%)
-      </v-progress-linear>
       <div class="pokecards">
-        <template v-for="(catchItem, index) in pokemonsWithStatus">
+        <template v-for="(catchItem, index) in pokedex">
           <v-card 
             v-if="showNotCaught || !showNotCaught && ((!showShiny && catchItem.caughtNormal) || (showShiny && catchItem.caughtShiny))"
             :key="index"
@@ -100,8 +65,8 @@ const progress = computed(() => {
 .title {
   width: fit-content;
   margin: auto;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 30px;
+  font-weight: 800;
   margin-bottom: 10px;
 }
 
@@ -110,19 +75,6 @@ const progress = computed(() => {
   gap: 10px;
   justify-content: center;
   margin-bottom: 10px;
-}
-
-.progress {
-  margin-bottom: 10px;
-  border-radius: 10px;
-  color:#2481EF;
-  height:25px !important;
-  width: calc(100% - 20px);
-  border: 2px solid black;
-
-  :deep(.v-progress-linear__content) {
-    color: black;
-  }
 }
 
 .pokecards {

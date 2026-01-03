@@ -2,7 +2,7 @@ import { requestOptions, handle } from '~/_helpers';
 
 export const fisherService = {
     getCatches,
-    getUserCatches,
+    getUserPokedex,
     getUserStatistics
 }
 
@@ -16,8 +16,8 @@ async function getCatches(): Promise<any> {
     });
 }
 
-async function getUserCatches(pseudo : string): Promise<any> {
-  return fetch(`${useRuntimeConfig().public.apiBaseUrl}/api/users/catches`, requestOptions.get() as RequestInit)
+async function getUserPokedex(): Promise<any> {
+  return fetch(`${useRuntimeConfig().public.apiBaseUrl}/api/users/pokedex/`, requestOptions.get() as RequestInit)
     .then((res) => {
       return handle.response(res);
     })
@@ -26,8 +26,8 @@ async function getUserCatches(pseudo : string): Promise<any> {
     });
 }
 
-async function getUserStatistics(pseudo : string): Promise<any> {
-  return fetch(`${useRuntimeConfig().public.apiBaseUrl}/api/users/statistics`, requestOptions.get() as RequestInit)
+async function getUserStatistics(): Promise<any> {
+  return fetch(`${useRuntimeConfig().public.apiBaseUrl}/api/users/statistics/`, requestOptions.get() as RequestInit)
     .then((res) => {
       return handle.response(res);
     })

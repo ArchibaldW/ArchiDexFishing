@@ -4,7 +4,7 @@ const { authenticateToken } = require('../middleware/authenticateToken');
 
 const router = express.Router();
 
-router.get("/catches", authenticateToken, userCtrl.getUserCatches);
+router.get("/pokedex", authenticateToken, userCtrl.getUserPokedex);
 router.get('/statistics', authenticateToken, userCtrl.getUserStatistics)
 router.post("/catch", authenticateToken, userCtrl.addUserCatch)
 

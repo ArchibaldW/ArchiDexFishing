@@ -47,6 +47,18 @@ exports.getTwitchCallback = async (req, res) => {
         const userData = await userResponse.json();
         const twitchUser = userData.data[0];
 
+         const user = await User.findOne({_id : twitchUser.login});
+
+
+        if(!user) {
+            const newUser = new User({
+                _id: twitchUser.login,
+                pseudo: twitchUser.login,
+                catches: []
+            })
+
+            await user.save()
+        }
 
         const payload = { 
             userId: twitchUser.id,
@@ -68,7 +80,6 @@ exports.getTwitchCallback = async (req, res) => {
         res.redirect(process.env.SITE_URL);
 
     } catch (error) {
-        console.log(error)
         console.error("Erreur durant l'authentification Twitch:", error);
         res.status(500).send("Une erreur est survenue.");
     }

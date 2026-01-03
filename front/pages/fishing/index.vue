@@ -8,7 +8,6 @@ const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
 const router = useRouter()
 
-const pseudo = ref('')
 const selectedTab = ref('')
 const tabList = [
     {label : 'Pokédex', value : 'pokedex'},
@@ -16,14 +15,10 @@ const tabList = [
 ]
 
 onBeforeMount(async () => {
-  if(user.value){
-    pseudo.value = user.value.username
-  } else {
+  if(!user.value){
     await router.push('/')
   }
 });
-
-  
 </script>
 
 <template>
@@ -31,8 +26,8 @@ onBeforeMount(async () => {
         <v-tabs v-model="selectedTab">
             <v-tab v-for="tab in tabList" :key="tab.value" :value="tab.value">{{ tab.label }}</v-tab>
         </v-tabs>
-        <Pokedex v-if="selectedTab === 'pokedex'" :pseudo="pseudo" />
-        <Statistics v-else-if="selectedTab === 'statistics'" :pseudo="pseudo" />
+        <Pokedex v-if="selectedTab === 'pokedex'"/>
+        <Statistics v-else-if="selectedTab === 'statistics'"/>
     </div>
 </template>
 
