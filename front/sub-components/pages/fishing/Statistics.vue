@@ -151,6 +151,12 @@ const globalShinyProgress = computed(() => {
     display: flex;
     gap: 20px;
 
+    @media (max-width: 768px){
+      margin-top: 10px;
+      flex-direction: column;
+      gap: 10px;
+    }
+
     &__progress {
       border-radius: 16px;
       height: 25px !important;
