@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const User = require('../models/User');
 
 exports.getBotJwt = (req, res) => {
     const botSecret = req.headers['x-bot-secret'];
@@ -47,8 +48,7 @@ exports.getTwitchCallback = async (req, res) => {
         const userData = await userResponse.json();
         const twitchUser = userData.data[0];
 
-         const user = await User.findOne({_id : twitchUser.login});
-
+        const user = await User.findOne({_id : twitchUser.login});
 
         if(!user) {
             const newUser = new User({
@@ -57,7 +57,7 @@ exports.getTwitchCallback = async (req, res) => {
                 catches: []
             })
 
-            await user.save()
+            await newUser.save()
         }
 
         const payload = { 
