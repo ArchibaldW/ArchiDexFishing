@@ -137,10 +137,10 @@ exports.getUserStatistics = async (req, res) => {
 exports.addUserCatch = async (req, res) => {
   try {
     const { pseudo, catch: catchData } = req.body;
-    const user = await User.findOne({_id : pseudo});
+    let user = await User.findOne({_id : pseudo});
 
     if(!user) {
-      const newUser = new User({
+      user = new User({
         _id: pseudo,
         catches: [catchData]
       })
