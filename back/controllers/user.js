@@ -1,5 +1,6 @@
 const Catch = require('../models/Catch');
 const User = require('../models/User');
+const checkAchievements = require('../utils/checkAchievements.js')
 
 exports.getUserPokedex = async (req, res) => {
   try {
@@ -148,8 +149,10 @@ exports.addUserCatch = async (req, res) => {
       user.catches.push(catchData)
     }
 
-    await user.save()
-    return res.status(201).json()
+    const {achievements, user : newUser} = await checkAchievements(user)
+
+    await newUser.save()
+    return res.status(201).json({achievements : achievements})
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }

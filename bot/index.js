@@ -179,6 +179,10 @@ const { jwtDecode } = require('jwt-decode');
               }
             });
             if (!res.ok) throw new Error('Erreur API');
+            const result = await res.json()
+            result.achievements.forEach(achievement => {
+              twitchService.say(`Ding dong @${capturedUser}, tu as réussi le succès #${achievement.number} : ${achievement.name} - ${achievement.description}`);
+            });
           } catch (error) {
             console.error(error);
           }
