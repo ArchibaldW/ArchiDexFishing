@@ -149,11 +149,12 @@ exports.addUserCatch = async (req, res) => {
       user.catches.push(catchData)
     }
 
-    const {achievements, user : newUser} = await checkAchievements(user)
+    const {achievementsOwned, user : newUser} = await checkAchievements(user)
 
     await newUser.save()
-    return res.status(201).json({achievements : achievements})
+    return res.status(201).json({achievements : achievementsOwned})
   } catch (err) {
+    console.log(err)
     return res.status(500).json({ error: err.message });
   }
 }
