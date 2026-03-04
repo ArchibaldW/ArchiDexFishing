@@ -1,5 +1,6 @@
 d<script setup>
 import { fisherService } from '~/_services';
+import { Tag, Type } from '~/_helpers';
 
 const stastistics = ref({})
 const ready = ref(false)
