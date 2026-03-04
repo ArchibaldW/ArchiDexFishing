@@ -11,15 +11,24 @@ exports.getUserPokedex = async (req, res) => {
 
     const catches = await Catch.find({}).lean();
 
-    const normalSet = new Set(user.catches.filter(c => !c.shiny).map(c => c.code));
-    const shinySet = new Set(user.catches.filter(c => c.shiny).map(c => c.code));
+    const normalCounts = new Map();
+    const shinyCounts = new Map();
+
+    user.catches.forEach(c => {
+      const targetMap = c.shiny ? shinyCounts : normalCounts;
+      const currentCount = targetMap.get(c.code) || 0;
+      targetMap.set(c.code, currentCount + 1);
+    });
 
     const pokedex = catches.map(
       p => (
         {
           ...p,
-          caughtNormal: normalSet.has(p.code),
-          caughtShiny: shinySet.has(p.code)
+          countNormal: normalCounts.get(p.code) || 0,
+          countShiny: shinyCounts.get(p.code) || 0,
+
+          caughtNormal: normalCounts.has(p.code),
+          caughtShiny: shinyCounts.has(p.code)
         }
       )
     );

@@ -47,7 +47,10 @@ const showNotCaught = ref(true)
               `type1-${catchItem.type1}`,
               catchItem.type2 ? `type2-${catchItem.type2}` : null
             ]"
-          >
+            >
+              <div v-if="showShiny ? catchItem.countShiny > 1 : catchItem.countNormal > 1" class="pokecards__pokecard__count">
+                x {{ showShiny ? catchItem.countShiny : catchItem.countNormal }}
+              </div>
               <v-card-title class="pokecards__pokecard__title">#{{codeOnlyNumber(catchItem.code)}} - {{ catchItem.caughtNormal || catchItem.caughtShiny ? catchItem.name : '???' }}</v-card-title>
               <img  class="pokecards__pokecard__image" :src="`/assets/${catchItem.code}${showShiny ? 's' : ''}.png`" />
           </v-card>
@@ -120,7 +123,20 @@ const showNotCaught = ref(true)
       }
     }
 
+    &__count{
+      position: absolute;
+      bottom: 5px; // Juste sous le titre
+      right: 5px;
+      color: black;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      z-index: 2;
+    }
+
     &.pokemon-caught{
+      position: relative;
       .pokecards__pokecard {
         &__title {
           background: linear-gradient(135deg, var(--bg-type1) 25%, var(--bg-type2) 75%);
