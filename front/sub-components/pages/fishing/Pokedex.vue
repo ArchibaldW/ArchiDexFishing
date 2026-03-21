@@ -44,7 +44,7 @@ const availableTags = computed(() => {
   });
   return Array.from(tags).map(tag => ({
     value: tag,
-    label: Tag[tag] || tag // Fallback sur le tag brut s'il manque dans l'Enum
+    label: Tag[tag] || tag
   })).sort((a, b) => a.label.localeCompare(b.label, 'fr'));
 });
 
@@ -56,7 +56,7 @@ const availableTypes = computed(() => {
   });
   return Array.from(types).map(type => ({
     value: type,
-    label: Type[type] || type // Fallback sur le type brut s'il manque dans l'Enum
+    label: Type[type] || type
   })).sort((a, b) => a.label.localeCompare(b.label, 'fr'));
 });
 
@@ -118,7 +118,6 @@ const processedPokedex = computed(() => {
 });
 
 const showShiny = ref(false)
-const showNotCaught = ref(true)
 </script>
 
 <template>
@@ -337,7 +336,7 @@ const showNotCaught = ref(true)
 
     &__count{
       position: absolute;
-      bottom: 5px; // Juste sous le titre
+      bottom: 5px;
       right: 5px;
       color: black;
       padding: 2px 8px;

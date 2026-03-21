@@ -96,6 +96,7 @@ const { jwtDecode } = require('jwt-decode');
     // 2G
     { "code": "0194p", "name": "Axoloto de Paldea" },
     { "code": "0199g", "name": "Roigada de Galar" },
+    { "code": "0211h", "name": "Qwilfish de Hisui" },
     { "code": "0222g", "name": "Corayon de Galar" },
 
     // 3G
@@ -110,8 +111,10 @@ const { jwtDecode } = require('jwt-decode');
     { "code": "0423o", "name": "Tritosor Mer Occident" },
 
     // 5G
+    { "code": "0503h", "name": "Clamiral de Hisui" },
     { "code": "0550b", "name": "Bargantua Bleu" },
     { "code": "0550r", "name": "Bargantua Rouge" },
+    { "code": "0550w", "name": "Bargantua Blanc" },
     { "code": "0592f", "name": "Viskuse Femelle" },
     { "code": "0592m", "name": "Viskuse Mâle" },
     { "code": "0593f", "name": "Moyade Femelle" },
@@ -125,6 +128,8 @@ const { jwtDecode } = require('jwt-decode');
     { "code": "0845h", "name": "Nigosier Gobe-tout" },
     { "code": "0875g", "name": "Bekaglaçon Tête de Gel" },
     { "code": "0875t", "name": "Bekaglaçon Tête Dégel" },
+    { "code": "0902f", "name": "Paragruel Femelle" },
+    { "code": "0902m", "name": "Paragruel Mâle" },
 
     // 9G
     { "code": "0964f", "name": "Superdofin forme Super" },
