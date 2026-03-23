@@ -66,7 +66,7 @@ const globalShinyProgress = computed(() => {
 
       <h2 class="statistics__subtitle">Par types</h2>
       <div class="statistics__category">
-        <v-card class="statistics__category__card" v-for="typeData of stastistics.types" :key="typeData.type">
+        <v-card class="statistics__category__card" v-for="typeData of stastistics.types" :key="typeData.type" :class="`type-${typeData.type}`">
           <h3>{{ Type[typeData.type] }}</h3>
           <div class="statistics__category__card__details">
             <v-progress-circular
@@ -131,86 +131,144 @@ const globalShinyProgress = computed(() => {
 
 <style scoped lang="scss">
 .statistics {
-  padding: 10px;
+  padding: 20px;
+  background: transparent;
+  min-height: 100vh;
+
   &__title {
     width: fit-content;
     margin: auto;
-    font-size: 30px;
+    font-size: 36px;
     font-weight: 800;
+    color: white;
+    margin-bottom: 40px;
+    letter-spacing: 1px;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   }
 
-  &__subtitle{
+  &__subtitle {
     width: fit-content;
-    margin: 30px auto 5px;
-    font-size: 24px;
-    font-weight: 600;
+    margin: 40px auto 20px;
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 2px;
   }
 
   &__global {
     width: 100%;
     display: flex;
     gap: 20px;
+    margin-bottom: 40px;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 20px;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
 
-    @media (max-width: 768px){
-      margin-top: 10px;
+    @media (max-width: 768px) {
       flex-direction: column;
-      gap: 10px;
+      gap: 15px;
     }
 
     &__progress {
-      border-radius: 16px;
-      height: 25px !important;
-      border: 2px solid black;
+      flex: 1;
+      border-radius: 8px;
+      height: 36px !important;
+      border: 2px solid white;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      background: white;
+      overflow: hidden;
 
       :deep(.v-progress-linear__content) {
-        color: black;
-      }
-      
-      &--normal{
-        color:blue;
+        color: #212121;
+        font-weight: 700;
+        font-size: 12px;
       }
 
-      &--shiny{
-        color: red;
+      &--normal {
+          color : #2481EF !important;
+      }
+
+      &--shiny {
+        color : #FFD700 !important
       }
     }
   }
 
-  &__category{
+  &__category {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 20px;
+    margin-bottom: 40px;
 
-    &__card{
-      border: 2px solid black;
-      padding: 20px 30px;
+    &__card {
+      background: linear-gradient(white, rgba(#999, 0.50)), white;
+      border: none;
+      border-left: 6px solid #999;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       text-align: center;
-      border-radius: 16px;
+      transition: all 0.3s ease;
+      position: relative;
+
+      &:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      }
+
+      h3 {
+        color: #212121;
+        font-weight: 700;
+        margin-bottom: 20px;
+        font-size: 16px;
+      }
 
       &__details {
-        margin-top: 20px;
         display: flex;
-        justify-content: space-between;
-        gap: 30px;
+        justify-content: space-around;
+        gap: 15px;
 
-        :deep(.v-progress-circular__content){
-          font-size: 11px;
-          font-weight: 600;
+        :deep(.v-progress-circular__content) {
+          font-size: 10px;
+          font-weight: 700;
+          color: #212121;
           display: flex;
           flex-direction: column;
         }
 
-        &__progress{
-          &--normal{
-            color: blue;
+        &__progress {
+          &--normal {
+            :deep(.v-progress-circular__overlay) {
+              stroke: #2481EF !important;
+            }
+            :deep(.v-progress-circular__underlay) {
+              stroke: rgba(36, 129, 239, 0.15) !important;
+            }
           }
-          &--shiny{
-            color: red;
+
+          &--shiny {
+            :deep(.v-progress-circular__overlay) {
+              stroke: #FFD700 !important;
+            }
+            :deep(.v-progress-circular__underlay) {
+              stroke: rgba(255, 215, 0, 0.15) !important;
+            }
           }
+        }
+      }
+
+      // Type colors - teinte transparente par-dessus fond blanc (12% opacité)
+      @each $type, $color in $type-colors {
+        &.type-#{$type} {
+          border-left-color: #{$color};
+          background: linear-gradient(white, rgba($color, 0.30)), white;
+          h3 { color: #{$color}; }
+          .statistics__category__card__details__progress--normal :deep(.v-progress-circular__overlay) { stroke: #{$color} !important; }
         }
       }
     }
   }
 }
-
 </style>

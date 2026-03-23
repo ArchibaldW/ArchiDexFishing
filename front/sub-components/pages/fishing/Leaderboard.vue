@@ -3,9 +3,9 @@
 
 <template>
   <div class="container">
-    <h1 class="container__title">Tes Succès</h1>
+    <h1 class="container__title">Kikimeter - Leaderboard</h1>
     <div class="placeholder">
-      <p>Les succès seront bientôt disponibles ! 🎯</p>
+      <p>Le classement sera bientôt disponible ! 🏆</p>
     </div>
   </div>
 </template>

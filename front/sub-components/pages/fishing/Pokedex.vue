@@ -128,22 +128,21 @@ const showShiny = ref(false)
         <v-chip-group 
           v-model="showShiny" 
           mandatory 
-          selected-class="bg-primary text-white" 
           class="mr-4"
         >
-          <v-chip :value="false" variant="elevated">
+          <v-chip :value="false" variant="outlined">
             Normaux
           </v-chip>
           
-          <v-chip :value="true" variant="elevated">
+          <v-chip :value="true" variant="outlined">
             ✨ Shiny
           </v-chip>
         </v-chip-group>
 
-        <v-chip-group v-model="filterCaught" mandatory selected-class="bg-primary text-white" class="mr-4">
-          <v-chip value="all" variant="elevated">Tous</v-chip>
-          <v-chip value="caught" variant="elevated">Capturés</v-chip>
-          <v-chip value="uncaught" variant="elevated">Manquants</v-chip>
+        <v-chip-group v-model="filterCaught" mandatory class="mr-4">
+          <v-chip value="all" variant="outlined">Tous</v-chip>
+          <v-chip value="caught" variant="outlined">Capturés</v-chip>
+          <v-chip value="uncaught" variant="outlined">Manquants</v-chip>
         </v-chip-group>
 
         <v-select
@@ -173,12 +172,12 @@ const showShiny = ref(false)
 
         <div class="chip-filters" v-if="availableGens.length > 0">
           <div class="chip-filters__title">Générations</div>
-          <v-chip-group v-model="selectedGen" column selected-class="bg-primary text-white">
+          <v-chip-group v-model="selectedGen" column>
               <v-chip 
                 v-for="gen in availableGens" 
                 :key="gen"
                 :value="gen"
-                variant="elevated"
+                variant="outlined"
               >
                 Genération {{ gen }}
               </v-chip>
@@ -187,13 +186,13 @@ const showShiny = ref(false)
 
         <div class="chip-filters" v-if="availableTypes.length > 0">
           <div class="chip-filters__title">Types (2 max)</div>
-          <v-chip-group v-model="selectedTypes" column multiple max="2" selected-class="bg-primary text-white">
+          <v-chip-group v-model="selectedTypes" column multiple max="2">
             <v-chip 
               v-for="type in availableTypes" 
               :key="type"
               :value="type.value"
-              variant="elevated"
-            >
+              variant="outlined"
+              :class="`chip-filter--type-${type.value}`">
               {{ type.label }}
             </v-chip>
           </v-chip-group>
@@ -201,12 +200,12 @@ const showShiny = ref(false)
 
         <div class="chip-filters" v-if="availableTags.length > 0">
           <div class="chip-filters__title">Tags spéciaux</div>
-          <v-chip-group v-model="selectedTag" column selected-class="bg-primary text-white">
+          <v-chip-group v-model="selectedTag" column>
             <v-chip 
               v-for="tag in availableTags" 
               :key="tag"
               :value="tag.value"
-              variant="elevated"
+              variant="outlined"
             >
               {{ tag.label }}
             </v-chip>
@@ -229,8 +228,10 @@ const showShiny = ref(false)
               x {{ showShiny ? catchItem.countShiny : catchItem.countNormal }}
             </div>
             <v-card-title class="pokecards__pokecard__title">#{{codeOnlyNumber(catchItem.code)}} - {{ catchItem.caughtNormal || catchItem.caughtShiny ? catchItem.name : '???' }}</v-card-title>
-            <img v-show="!showShiny" class="pokecards__pokecard__image" :src="`/assets/${catchItem.code}.png`" />
-            <img v-show="showShiny" class="pokecards__pokecard__image" :src="`/assets/${catchItem.code}s.png`" />
+            <div class="pokecards__pokecard__images">
+              <img v-show="!showShiny" class="pokecards__pokecard__image" :src="`/assets/${catchItem.code}.png`" />
+              <img v-show="showShiny" class="pokecards__pokecard__image" :src="`/assets/${catchItem.code}s.png`" />
+            </div>
         </v-card>
       </div>
     </template>
@@ -239,15 +240,20 @@ const showShiny = ref(false)
 
 <style scoped lang="scss">
 .container {
-  padding: 10px;
+  padding: 20px;
+  background: transparent;
+  min-height: 100vh;
 }
 
 .title {
   width: fit-content;
   margin: auto;
-  font-size: 30px;
+  font-size: 36px;
   font-weight: 800;
-  margin-bottom: 10px;
+  color: white;
+  margin-bottom: 40px;
+  letter-spacing: 1px;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .filters {
@@ -255,26 +261,32 @@ const showShiny = ref(false)
   gap: 15px;
   justify-content: center;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   flex-wrap: wrap;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 20px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
 
   .sort-select {
     max-width: 200px;
     min-width: 150px;
+    color: white;
   }
 
   .search-bar {
     min-width: 200px;
     max-width: 300px;
     flex-grow: 1;
+    color: white;
   }
 }
 
 .chip-container {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  margin-bottom: 20px;
+  gap: 20px;
+  margin-bottom: 40px;
 
   .chip-filters {
     display: flex;
@@ -282,22 +294,55 @@ const showShiny = ref(false)
     align-items: center;
 
     &__title {
-      font-size: 0.9rem;
-      font-weight: bold;
-      color: gray;
+      font-size: 14px;
+      font-weight: 700;
+      color: white;
       text-transform: uppercase;
-      margin-bottom: 5px;
+      letter-spacing: 2px;
+      margin-bottom: 15px;
+    }
+  }
+}
+
+:deep(.v-chip) {
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: white !important;
+  backdrop-filter: blur(10px) !important;
+  transition: all 0.3s ease !important;
+  font-weight: 600 !important;
+}
+
+:deep(.v-chip:hover) {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+:deep(.v-chip--selected) {
+  .v-chip__overlay {
+    background: #2481EF
+  }
+  border-color: #2481EF !important;
+}
+
+@each $type, $color in $type-colors {
+  :deep(.chip-filter--type-#{$type}) {
+    &.v-chip--selected{
+      .v-chip__overlay {
+        background: $color !important;
+      }
+      border-color: $color !important;
     }
   }
 }
 
 .pokecards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
   gap: 20px;
 
   @media (max-width: 768px){
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
   }
 
   &__pokecard{
@@ -305,49 +350,76 @@ const showShiny = ref(false)
     align-items: center;
     flex-direction: column;
     border-radius: 20px;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    background: white;
+
+    &:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
 
     &__title {
-      background-color: grey;
+      background-color: #999;
       color: white;
       width: 100%;
       white-space: break-spaces;
-      height: 80px;
+      height: 55px;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 6px;
 
       @media (max-width: 768px){
-        font-size: 16px;
+        font-size: 11px;
+        height: 50px;
+        padding: 4px;
       }
+    }
+
+    &__images{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.15);	
     }
 
     &__image {
       padding: 10px;
-      height: 240px;
+      height: 160px;
       object-fit: contain;
       width: 100%;
       filter: brightness(0) invert(0);
+      user-drag: none;
+      -webkit-user-drag: none;
+      -moz-user-select: none;
 
       @media (max-width: 768px){
-        height: 150px;
+        height: 100px;
       }
     }
 
     &__count{
       position: absolute;
-      bottom: 5px;
-      right: 5px;
-      color: black;
-      padding: 2px 8px;
-      border-radius: 10px;
+      bottom: 10px;
+      right: 10px;
+      color: white;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 4px 12px;
+      border-radius: 12px;
       font-weight: bold;
       font-size: 0.9rem;
       z-index: 2;
     }
 
     &.pokemon-caught{
-      position: relative;
       .pokecards__pokecard {
         &__title {
           background: linear-gradient(135deg, var(--bg-type1) 25%, var(--bg-type2) 75%);
