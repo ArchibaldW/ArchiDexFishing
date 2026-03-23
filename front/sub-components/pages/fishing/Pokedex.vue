@@ -60,6 +60,12 @@ const availableTypes = computed(() => {
   })).sort((a, b) => a.label.localeCompare(b.label, 'fr'));
 });
 
+const resetFilters = () => {
+  selectedGen.value = null;
+  selectedTag.value = null;
+  selectedTypes.value = [];
+}
+
 const processedPokedex = computed(() => {
   let result = pokedex.value.filter(catchItem => {
     const isCaught = showShiny.value ? catchItem.caughtShiny : catchItem.caughtNormal;
@@ -184,20 +190,6 @@ const showShiny = ref(false)
           </v-chip-group>
         </div>
 
-        <div class="chip-filters" v-if="availableTypes.length > 0">
-          <div class="chip-filters__title">Types (2 max)</div>
-          <v-chip-group v-model="selectedTypes" column multiple max="2">
-            <v-chip 
-              v-for="type in availableTypes" 
-              :key="type"
-              :value="type.value"
-              variant="outlined"
-              :class="`chip-filter--type-${type.value}`">
-              {{ type.label }}
-            </v-chip>
-          </v-chip-group>
-        </div>
-
         <div class="chip-filters" v-if="availableTags.length > 0">
           <div class="chip-filters__title">Tags spéciaux</div>
           <v-chip-group v-model="selectedTag" column>
@@ -211,6 +203,24 @@ const showShiny = ref(false)
             </v-chip>
           </v-chip-group>
         </div>
+
+        <div class="chip-filters" v-if="availableTypes.length > 0">
+          <div class="chip-filters__title">Types (2 max)</div>
+          <v-chip-group v-model="selectedTypes" column multiple :max="2">
+            <v-chip 
+              v-for="type in availableTypes" 
+              :key="type"
+              :value="type.value"
+              variant="outlined"
+              :class="`chip-filter--type-${type.value}`">
+              {{ type.label }}
+            </v-chip>
+          </v-chip-group>
+        </div>
+
+        <v-btn class="filters-reset" variant="outlined" @click="resetFilters" v-if="selectedGen || selectedTag || selectedTypes.length > 0">
+            Réinitialiser les filtres
+        </v-btn>
       </div>
 
       <div class="pokecards">
@@ -280,6 +290,14 @@ const showShiny = ref(false)
     flex-grow: 1;
     color: white;
   }
+}
+
+.filters-reset{
+  margin: auto;
+  color: red;
+  border-radius: 25px;
+  padding: 6px 20px;
+  transition: all 0.3s ease;
 }
 
 .chip-container {
