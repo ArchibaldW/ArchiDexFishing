@@ -17,6 +17,14 @@ const globalNormalProgress = computed(() => {
 const globalShinyProgress = computed(() => {
   return stastistics.value && stastistics.value.global ? 100*stastistics.value.global.caughtShiny/stastistics.value.global.total : 0
 })
+
+const sortedTypesStatistics = computed(() => {
+  return stastistics.value.types.sort((a, b) => {
+    const typeA = Type[a.type] || '';
+    const typeB = Type[b.type] || '';
+    return typeA.localeCompare(typeB);
+  });
+});
 </script>
 
 <template>
@@ -66,7 +74,7 @@ const globalShinyProgress = computed(() => {
 
       <h2 class="statistics__subtitle">Par types</h2>
       <div class="statistics__category">
-        <v-card class="statistics__category__card" v-for="typeData of stastistics.types" :key="typeData.type" :class="`type-${typeData.type}`">
+        <v-card class="statistics__category__card" v-for="typeData of sortedTypesStatistics" :key="typeData.type" :class="`type-${typeData.type}`">
           <h3>{{ Type[typeData.type] }}</h3>
           <div class="statistics__category__card__details">
             <v-progress-circular
@@ -172,7 +180,6 @@ const globalShinyProgress = computed(() => {
     }
 
     &__progress {
-      flex: 1;
       border-radius: 8px;
       height: 36px !important;
       border: 2px solid white;
