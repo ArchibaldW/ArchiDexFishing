@@ -3,5 +3,6 @@ export enum Tag {
   legendary = 'Légendaires',
   mega = 'Mega-Evolutions',
   starter = 'Starters',
-  pref = 'Favoris',
+  favorite = 'Favoris',
+  variant = 'Variantes',
 }

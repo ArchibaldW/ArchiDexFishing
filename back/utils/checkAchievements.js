@@ -218,8 +218,9 @@ const checkAchievements = async function(user) {
     // 34 : Catch 80 uniques pokémons
     // 35 : Catch 110 uniques pokémons
     // 36 : Catch 145 uniques pokémons
-    if ([29, 30, 31, 32, 33, 34, 35, 36].some(num => !userUnlockedAchievements.includes(num))) {
-        const thresholds = [[29, 5], [30, 10], [31, 20], [32, 35], [33, 55], [34, 80], [35, 110], [36, 145]];
+    // 71 : Catch 190 uniques pokémons
+    if ([29, 30, 31, 32, 33, 34, 35, 36, 71].some(num => !userUnlockedAchievements.includes(num))) {
+        const thresholds = [[29, 5], [30, 10], [31, 20], [32, 35], [33, 55], [34, 80], [35, 110], [36, 151], [71, 200]];
 
         const uniqueCount = userUniqueCatches.size;
         thresholds.forEach(([num, req]) => {
@@ -262,14 +263,13 @@ const checkAchievements = async function(user) {
 
 
     // 40 : Catch a pokemon with a variation
-    // 41 : Catch 10 pokemon with a variation
-    if ([40, 41].some(num => !userUnlockedAchievements.includes(num))) {
+    // 41 : Catch 10 unique variations of pokemons
+    // 72 : Catch 25 unique variations of pokemons
+    // 73 : Catch all unique variations of all pokemons
+    if ([40, 41, 72, 73].some(num => !userUnlockedAchievements.includes(num))) {
     
-        const variantsOwned = [...userUniqueCatches].filter(code => {
-            const hasLetter = /[a-z]$/.test(code);
-            const isMega = megas.includes(code);
-            return hasLetter && !isMega;
-        });
+        const variantCodes = userCatches.filter(c => c.tags.includes("variant")).map(c => c.code);
+        const variantsOwned = [...new Set(variantCodes)];
 
         if (!userUnlockedAchievements.includes(40) && variantsOwned.length > 0) {
             unlock(40)
@@ -277,6 +277,15 @@ const checkAchievements = async function(user) {
 
         if (!userUnlockedAchievements.includes(41) && variantsOwned.length >= 10) {
             unlock(41)
+        }
+
+        if (!userUnlockedAchievements.includes(72) && variantsOwned.length >= 25) {
+            unlock(72)
+        }
+
+        const totalUniqueVariants = new Set(catches.filter(c => c.tags && c.tags.includes("variant")).map(c => c.code)).size;
+        if (!userUnlockedAchievements.includes(73) && variantsOwned.length === totalUniqueVariants) {
+            unlock(73)
         }
     }
 
@@ -395,6 +404,23 @@ const checkAchievements = async function(user) {
 
     if (!userUnlockedAchievements.includes(70) && userUniqueCatches.has("0321")) {
         unlock(70);
+    }
+
+    // 74 : Catch a favorite pokemon 
+    // 75 : Catch all favorite pokemons
+    if ([74, 75].some(num => !userUnlockedAchievements.includes(num))) {
+    
+        const favoritesCodes = userCatches.filter(c => c.tags.includes("favorite")).map(c => c.code);
+        const favoritesOwned = [...new Set(favoritesCodes)];
+
+        if (!userUnlockedAchievements.includes(74) && favoritesCodes.length > 0) {
+            unlock(74)
+        }
+
+        const totalUniqueFavorites = new Set(catches.filter(c => c.tags && c.tags.includes("favorite")).map(c => c.code)).size;
+        if (!userUnlockedAchievements.includes(75) && favoritesOwned.length === totalUniqueFavorites) {
+            unlock(75)
+        }
     }
 
     return {achievementsOwned, user}

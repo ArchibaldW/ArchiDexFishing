@@ -88,16 +88,8 @@ const { jwtDecode } = require('jwt-decode');
   const specialCases = [
     // 1G
     { "code": "0009m", "name": "Méga-Tortank" },
-    { "code": "0079g", "name": "Ramoloss de Galar" },
     { "code": "0080m", "name": "Méga-Flagadoss" },
-    { "code": "0080g", "name": "Flagadoss de Galar" },
     { "code": "0130m", "name": "Méga-Leviator" },
-
-    // 2G
-    { "code": "0194p", "name": "Axoloto de Paldea" },
-    { "code": "0199g", "name": "Roigada de Galar" },
-    { "code": "0211h", "name": "Qwilfish de Hisui" },
-    { "code": "0222g", "name": "Corayon de Galar" },
 
     // 3G
     { "code": "0260m", "name": "Méga-Laggron" },
@@ -111,19 +103,26 @@ const { jwtDecode } = require('jwt-decode');
     { "code": "0423o", "name": "Tritosor Mer Occident" },
 
     // 5G
-    { "code": "0503h", "name": "Clamiral de Hisui" },
     { "code": "0550b", "name": "Bargantua Bleu" },
     { "code": "0550r", "name": "Bargantua Rouge" },
-    { "code": "0550w", "name": "Bargantua Blanc" },
     { "code": "0592f", "name": "Viskuse Femelle" },
     { "code": "0592m", "name": "Viskuse Mâle" },
     { "code": "0593f", "name": "Moyade Femelle" },
     { "code": "0593m", "name": "Moyade Mâle" },
 
     // 7G
+    { "code": "0038a", "name": "Feunard d'Alola" },
     { "code": "0746b", "name": "Froussardine en banc" },
 
     // 8G
+    { "code": "0079g", "name": "Ramoloss de Galar" },
+    { "code": "0080g", "name": "Flagadoss de Galar" },
+    { "code": "0199g", "name": "Roigada de Galar" },
+    { "code": "0211h", "name": "Qwilfish de Hisui" },
+    { "code": "0222g", "name": "Corayon de Galar" },
+    { "code": "0503h", "name": "Clamiral de Hisui" },
+    { "code": "0570h", "name": "Zorua de Hisui" },
+    { "code": "0550w", "name": "Bargantua Blanc" },
     { "code": "0845g", "name": "Nigosier Gobe-chu" },
     { "code": "0845h", "name": "Nigosier Gobe-tout" },
     { "code": "0875g", "name": "Bekaglaçon Tête de Gel" },
@@ -132,6 +131,7 @@ const { jwtDecode } = require('jwt-decode');
     { "code": "0902m", "name": "Paragruel Mâle" },
 
     // 9G
+    { "code": "0194p", "name": "Axoloto de Paldea" },
     { "code": "0964f", "name": "Superdofin forme Super" },
     { "code": "0978c", "name": "Nigirigon forme Courbée" },
     { "code": "0978a", "name": "Nigirigon forme Affalée" },

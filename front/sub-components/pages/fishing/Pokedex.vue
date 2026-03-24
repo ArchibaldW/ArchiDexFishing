@@ -64,6 +64,9 @@ const resetFilters = () => {
   selectedGen.value = null;
   selectedTag.value = null;
   selectedTypes.value = [];
+  showShiny.value = false;
+  filterCaught.value = 'all';
+  searchName.value = '';
 }
 
 const processedPokedex = computed(() => {
@@ -218,7 +221,7 @@ const showShiny = ref(false)
           </v-chip-group>
         </div>
 
-        <v-btn class="filters-reset" variant="outlined" @click="resetFilters" v-if="selectedGen || selectedTag || selectedTypes.length > 0">
+        <v-btn class="filters-reset" variant="outlined" @click="resetFilters" v-if="selectedGen || selectedTag || selectedTypes.length > 0 || showShiny || filterCaught !== 'all' || searchName">
             Réinitialiser les filtres
         </v-btn>
       </div>
