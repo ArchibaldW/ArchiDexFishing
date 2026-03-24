@@ -376,7 +376,20 @@ const showShiny = ref(false)
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    background: white;
+
+    background: linear-gradient(135deg, var(--bg-type1) 25%, var(--bg-type2) 75%);
+      color: white;
+
+      @each $type, $color in $type-colors {
+        &.type1-#{$type} {
+          --bg-type1: #{$color};
+          --bg-type2: #{$color};
+        }
+        
+        &.type2-#{$type} {
+          --bg-type2: #{$color} !important;
+        }
+      }
 
     &:hover {
       transform: translateY(-6px);
@@ -384,11 +397,10 @@ const showShiny = ref(false)
     }
 
     &__title {
-      background-color: #999;
       color: white;
       width: 100%;
       white-space: break-spaces;
-      height: 55px;
+      height: 50px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -409,7 +421,6 @@ const showShiny = ref(false)
       align-items: center;
       justify-content: center;
       width: 100%;
-      background: rgba(0, 0, 0, 0.15);	
     }
 
     &__image {
@@ -430,7 +441,6 @@ const showShiny = ref(false)
       bottom: 10px;
       right: 10px;
       color: white;
-      background: rgba(0, 0, 0, 0.6);
       padding: 4px 12px;
       border-radius: 12px;
       font-weight: bold;
@@ -439,29 +449,13 @@ const showShiny = ref(false)
     }
 
     &.pokemon-caught{
-      .pokecards__pokecard {
-        &__title {
-          background: linear-gradient(135deg, var(--bg-type1) 25%, var(--bg-type2) 75%);
-          color: white;
-        }
-        &__image {
-          filter: unset;
-        }
-      }
+      
 
-      @each $type, $color in $type-colors {
-        &.type1-#{$type} {
-          .pokecards__pokecard__title {
-            --bg-type1: #{$color};
-            --bg-type2: #{$color};
-          }
-        }
-        
-        &.type2-#{$type} {
-          .pokecards__pokecard__title {
-            --bg-type2: #{$color} !important;
-          }
-        }
+      .pokecards__pokecard__images {
+        background: none;
+      }
+      .pokecards__pokecard__image {
+        filter: unset;
       }
     }
   }
