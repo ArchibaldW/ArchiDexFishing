@@ -63,8 +63,6 @@ const leaderboardsData = [
 </template>
 
 <style scoped lang="scss">
-@import '~/scss/variables';
-
 .container {
   padding: 20px;
   background: transparent;
