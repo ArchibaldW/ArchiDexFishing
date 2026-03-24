@@ -8,4 +8,4 @@ const achievementSchema = new mongoose.Schema({
   value: {type : Number, required: true}
 }, { timestamps: false });
 
-module.exports = mongoose.model("Achievements", achievementSchema);
+module.exports = mongoose.model("Achievement", achievementSchema);

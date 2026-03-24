@@ -39,6 +39,18 @@ $type-colors: (
     flying: $flying
 );
 
+$bronze: #CD7F32;
+$silver: #C0C0C0;
+$gold: #FFD700;
+$platinum: #bedbed;
+
+$tier-colors: (
+  "bronze": $bronze,
+  "silver": $silver,
+  "gold": $gold,
+  "platinum": $platinum
+);
+
 // ===== Pokémon Theme Colors =====
 $bg-dark: #2A2A2A;
 $bg-card: #FFFFFF;

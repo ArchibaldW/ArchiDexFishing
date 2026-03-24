@@ -1,5 +1,5 @@
 const Catch = require('../models/Catch');
-const Achievements = require('../models/Achievements');
+const Achievement = require('../models/Achievement');
 
 const starters = [
     ["0007", "0008", "0009"],
@@ -16,7 +16,7 @@ const megas = ["0009m", "0080m", "0130m", "0260m", "0319m", "0382p"];
 
 const checkAchievements = async function(user) {
     const catches = await Catch.find({}).lean();
-    const achievementsList = await Achievements.find({}).lean();
+    const achievementsList = await Achievement.find({}).lean();
     achievementsList.sort((a, b) => a.number - b.number)
 
     const userUnlockedAchievements = user.achievements.map(a => a.number);

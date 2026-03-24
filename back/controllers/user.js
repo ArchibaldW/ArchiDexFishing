@@ -1,5 +1,6 @@
 const Catch = require('../models/Catch');
 const User = require('../models/User');
+const Achievement = require('../models/Achievement');
 const checkAchievements = require('../utils/checkAchievements.js')
 
 exports.getUserPokedex = async (req, res) => {
@@ -143,6 +144,50 @@ exports.getUserStatistics = async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 }
+
+exports.getUserAchievements = async (req, res) => {
+  try {
+    const user = await User.findOne({_id: req.user.username});
+    if (!user){
+      return res.status(404).json({error : "Vous n'avez encore rien pêché"})
+    }
+
+    const users = await User.find({}).lean();
+
+    const achievements = await Achievement.find({}).lean();
+
+    const usersWithAchievements = users.filter(u => u.achievements && u.achievements.length > 0);
+    const totalUsersWithAchievements = usersWithAchievements.length;
+
+    const achievementCounts = new Map();
+    usersWithAchievements.forEach(u => {
+      u.achievements.forEach(achievement => {
+        const count = achievementCounts.get(achievement.number) || 0;
+        achievementCounts.set(achievement.number, count + 1);
+      });
+    });
+
+    user.achievements.forEach(element => {
+      achievements[element.number - 1].unlocked = true;
+      achievements[element.number - 1].date = element.date; 
+    });
+
+    achievements.forEach(achievement => {
+      const count = achievementCounts.get(achievement.number) || 0;
+      achievement.percentage = totalUsersWithAchievements > 0 
+        ? Math.round((count / totalUsersWithAchievements) * 100) 
+        : 0;
+    });
+
+    achievements.sort((a, b) => a.number - b.number)
+
+    return res.status(200).json(achievements);
+  } catch (err) {
+    console.log(err)
+    return res.status(500).json({ error: err.message });
+  }
+}
+
 
 exports.addUserCatch = async (req, res) => {
   try {
