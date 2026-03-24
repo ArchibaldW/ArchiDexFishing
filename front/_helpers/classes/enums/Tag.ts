@@ -1,6 +1,7 @@
 export enum Tag {
-  fossil = 'Fossile',
-  legendary = 'Légendaire',
-  mega = 'Mega-Evolution',
-  starter = 'Starter',
+  fossil = 'Fossiles',
+  legendary = 'Légendaires',
+  mega = 'Mega-Evolutions',
+  starter = 'Starters',
+  pref = 'Favoris',
 }
