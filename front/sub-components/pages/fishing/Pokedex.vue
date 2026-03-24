@@ -415,9 +415,7 @@ const showShiny = ref(false)
       object-fit: contain;
       width: 100%;
       filter: brightness(0) invert(0);
-      user-drag: none;
       -webkit-user-drag: none;
-      -moz-user-select: none;
 
       @media (max-width: 768px){
         height: 100px;

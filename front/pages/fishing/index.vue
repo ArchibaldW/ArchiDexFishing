@@ -51,8 +51,6 @@ onBeforeMount(async () => {
 
       .v-tab {
         font-size: 13px;
-        transition: all 0.3s ease;
-        min-width: 150px;
         color: white;
 
         &:hover {
