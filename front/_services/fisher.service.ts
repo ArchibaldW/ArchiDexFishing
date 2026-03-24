@@ -3,7 +3,8 @@ import { requestOptions, handle } from '~/_helpers';
 export const fisherService = {
     getUserPokedex,
     getUserStatistics,
-    getUserAchievements
+    getUserAchievements,
+    getLeaderboards
 }
 
 async function getUserPokedex(): Promise<any> {
@@ -28,6 +29,16 @@ async function getUserStatistics(): Promise<any> {
 
 async function getUserAchievements(): Promise<any> {
   return fetch(`${useRuntimeConfig().public.apiBaseUrl}/api/users/achievements/`, requestOptions.get() as RequestInit)
+    .then((res) => {
+      return handle.response(res);
+    })
+    .catch((error) => {
+      handle.error(error);
+    });
+}
+
+async function getLeaderboards(): Promise<any> {
+  return fetch(`${useRuntimeConfig().public.apiBaseUrl}/api/users/leaderboards/`, requestOptions.get() as RequestInit)
     .then((res) => {
       return handle.response(res);
     })

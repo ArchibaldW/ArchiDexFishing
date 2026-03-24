@@ -167,12 +167,9 @@ exports.getUserAchievements = async (req, res) => {
       });
     });
 
-    let totalAchievementsPoints = 0;
-
     user.achievements.forEach(element => {
       achievements[element.number - 1].unlocked = true;
       achievements[element.number - 1].date = element.date;
-      totalAchievementsPoints += achievements[element.number - 1].value;
     });
 
     achievements.forEach(achievement => {
@@ -184,7 +181,81 @@ exports.getUserAchievements = async (req, res) => {
 
     achievements.sort((a, b) => a.number - b.number)
 
-    return res.status(200).json({ achievements, totalPoints: totalAchievementsPoints });
+    return res.status(200).json({ achievements, totalPoints: user.achievementsPoints });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+}
+
+exports.getLeaderboards = async (req, res) => {
+  try {
+    const users = await User.find({}).lean();
+
+    // Leaderboard 1: Total catches
+    const totalCatches = users
+      .map(user => ({
+        username: user._id,
+        total: user.catches ? user.catches.length : 0
+      }))
+      .filter(user => user.username !== "archibaldwirslayd")
+      .sort((a, b) => b.total - a.total)
+      .slice(0, 10)
+      .map((entry, index) => ({
+        rank: index + 1,
+        ...entry
+      }));
+
+    // Leaderboard 2: Unique catches
+    const uniqueCatches = users
+      .map(user => {
+        const uniqueCodes = new Set(user.catches ? user.catches.map(c => c.code) : []);
+        return {
+          username: user._id,
+          unique: uniqueCodes.size
+        };
+      })
+      .filter(user => user.username !== "archibaldwirslayd")
+      .sort((a, b) => b.unique - a.unique)
+      .slice(0, 10)
+      .map((entry, index) => ({
+        rank: index + 1,
+        ...entry
+      }));
+
+    // Leaderboard 3: Achievements count
+    const achievements = users
+      .map(user => ({
+        username: user._id,
+        count: user.achievements ? user.achievements.length : 0
+      }))
+      .filter(user => user.username !== "archibaldwirslayd")
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 10)
+      .map((entry, index) => ({
+        rank: index + 1,
+        ...entry
+      }));
+
+    // Leaderboard 4: Achievement points
+    const achievementPoints = users
+      .map(user => ({
+        username: user._id,
+        points: user.achievementsPoints || 0
+      }))
+      .filter(user => user.username !== "archibaldwirslayd")
+      .sort((a, b) => b.points - a.points)
+      .slice(0, 10)
+      .map((entry, index) => ({
+        rank: index + 1,
+        ...entry
+      }));
+
+    return res.status(200).json({
+      totalCatches,
+      uniqueCatches,
+      achievements,
+      achievementPoints
+    });
   } catch (err) {
     console.log(err)
     return res.status(500).json({ error: err.message });

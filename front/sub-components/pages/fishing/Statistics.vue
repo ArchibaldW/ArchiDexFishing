@@ -29,7 +29,7 @@ const sortedTypesStatistics = computed(() => {
 
 <template>
   <div class="statistics">
-    <h1 class="statistics__title">Tes statistiques avancées</h1>
+    <h1 class="statistics__title">Tes Statistiques Avancées</h1>
     <template v-if="ready">
       <h2 class="statistics__subtitle">Progression globale</h2>
       <div class="statistics__global">

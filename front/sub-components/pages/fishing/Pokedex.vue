@@ -128,7 +128,7 @@ const showShiny = ref(false)
 
 <template>
   <div class="container">
-    <h1 class="title">Ton Pokedex</h1>
+    <h1 class="title">Ton Pokédex</h1>
     <template v-if="ready">
       <div class="filters">
         <v-chip-group 

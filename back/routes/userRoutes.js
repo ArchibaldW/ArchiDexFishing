@@ -8,6 +8,8 @@ router.get("/pokedex", authenticateToken, userCtrl.getUserPokedex);
 router.get('/statistics', authenticateToken, userCtrl.getUserStatistics)
 router.get("/achievements", authenticateToken, userCtrl.getUserAchievements)
 
+router.get("/leaderboards", userCtrl.getLeaderboards);
+
 router.post("/catch", authenticateToken, userCtrl.addUserCatch)
 
 module.exports = router;
