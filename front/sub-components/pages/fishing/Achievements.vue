@@ -3,11 +3,18 @@ import { fisherService } from '~/_services';
 
 const ready = ref(false)
 const achievements = ref([])
-const sortBy = ref('number') // 'number' ou 'percentage'
+const totalPoints = ref(0)
+const sortBy = ref('number')
+const filterMode = ref('all')
 
 const sortOptions = [
   { title: 'Par numéro', value: 'number' },
   { title: 'Par pourcentage de réussite', value: 'percentage' }
+]
+
+const filterOptions = [
+  { title: 'Tous les succès', value: 'all' },
+  { title: 'Uniquement obtenu', value: 'unlocked' }
 ]
 
 const formatDate = (dateString) => {
@@ -21,17 +28,25 @@ const formatDate = (dateString) => {
 };
 
 const sortedAchievements = computed(() => {
-  const sorted = [...achievements.value];
+  let filtered = [...achievements.value];
   
-  if (sortBy.value === 'percentage') {
-    return sorted.sort((a, b) => (b.percentage || 0) - (a.percentage || 0));
+  // Apply filter
+  if (filterMode.value === 'unlocked') {
+    filtered = filtered.filter(a => a.unlocked);
   }
   
-  return sorted.sort((a, b) => a.number - b.number);
+  // Apply sort
+  if (sortBy.value === 'percentage') {
+    return filtered.sort((a, b) => (b.percentage || 0) - (a.percentage || 0));
+  }
+  
+  return filtered.sort((a, b) => a.number - b.number);
 });
 
 onBeforeMount(async () => {
-  achievements.value = await fisherService.getUserAchievements();
+  const result = await fisherService.getUserAchievements();
+  achievements.value = result.achievements;
+  totalPoints.value = result.totalPoints;
   ready.value = true
 });
 </script>
@@ -41,6 +56,26 @@ onBeforeMount(async () => {
     <h1 class="container__title">Tes Succès</h1>
     
     <div class="filters" v-if="ready">
+      <div>
+        <span style="color: white; font-weight: 700;">Total de points : </span>
+        <span style="color: #4caf50; font-weight: 700;">{{ totalPoints }} pts</span>
+      </div>
+      
+      <div class="filter-radio-group">
+        <span style="color: white; font-weight: 700; margin-right: 10px;">Affichage :</span>
+        <div class="radio-buttons">
+          <label v-for="option in filterOptions" :key="option.value" class="radio-label">
+            <input 
+              type="radio" 
+              :value="option.value" 
+              v-model="filterMode"
+              name="achievement-filter"
+            />
+            <span>{{ option.title }}</span>
+          </label>
+        </div>
+      </div>
+      
       <v-select
         v-model="sortBy"
         :items="sortOptions"
@@ -106,16 +141,57 @@ onBeforeMount(async () => {
 .filters {
   display: flex;
   gap: 15px;
-  justify-content: right;
+  justify-content: center;
   margin-bottom: 20px;
   flex-wrap: wrap;
   border-radius: 12px;
   backdrop-filter: blur(10px);
+  align-items: center;
 
   .sort-select {
     max-width: fit-content;
     min-width: 150px;
     color: white;
+  }
+}
+
+.filter-radio-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+
+  .radio-buttons {
+    display: flex;
+    gap: 15px;
+  }
+
+  .radio-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    color: white;
+    font-weight: 500;
+    user-select: none;
+
+    input[type="radio"] {
+      cursor: pointer;
+      width: 16px;
+      height: 16px;
+      accent-color: #4caf50;
+    }
+
+    span {
+      font-size: 14px;
+    }
+
+    &:hover {
+      opacity: 0.8;
+    }
   }
 }
 

@@ -218,9 +218,8 @@ const checkAchievements = async function(user) {
     // 34 : Catch 80 uniques pokémons
     // 35 : Catch 110 uniques pokémons
     // 36 : Catch 145 uniques pokémons
-    // 37 : Catch 190 uniques pokémons
-    if ([29, 30, 31, 32, 33, 34, 35, 36, 37].some(num => !userUnlockedAchievements.includes(num))) {
-        const thresholds = [[29, 5], [30, 10], [31, 20], [32, 35], [33, 55], [34, 80], [35, 110], [36, 145], [37, 199]];
+    if ([29, 30, 31, 32, 33, 34, 35, 36].some(num => !userUnlockedAchievements.includes(num))) {
+        const thresholds = [[29, 5], [30, 10], [31, 20], [32, 35], [33, 55], [34, 80], [35, 110], [36, 145]];
 
         const uniqueCount = userUniqueCatches.size;
         thresholds.forEach(([num, req]) => {
@@ -229,6 +228,15 @@ const checkAchievements = async function(user) {
             }
         });
     }
+
+    // 37 : Catch all unique pokémons
+    if (!userUnlockedAchievements.includes(37)){
+        const uniqueCount = userUniqueCatches.size;
+        if (uniqueCount === catches.length) {
+            unlock(37)
+        }
+    }
+
 
     // 38 : Catch a trio of starters
     if (!userUnlockedAchievements.includes(38)){

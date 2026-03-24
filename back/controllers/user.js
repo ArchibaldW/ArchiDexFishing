@@ -167,9 +167,12 @@ exports.getUserAchievements = async (req, res) => {
       });
     });
 
+    let totalAchievementsPoints = 0;
+
     user.achievements.forEach(element => {
       achievements[element.number - 1].unlocked = true;
-      achievements[element.number - 1].date = element.date; 
+      achievements[element.number - 1].date = element.date;
+      totalAchievementsPoints += achievements[element.number - 1].value;
     });
 
     achievements.forEach(achievement => {
@@ -181,7 +184,7 @@ exports.getUserAchievements = async (req, res) => {
 
     achievements.sort((a, b) => a.number - b.number)
 
-    return res.status(200).json(achievements);
+    return res.status(200).json({ achievements, totalPoints: totalAchievementsPoints });
   } catch (err) {
     console.log(err)
     return res.status(500).json({ error: err.message });
