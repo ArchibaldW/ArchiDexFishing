@@ -2,17 +2,11 @@
 import { fisherService } from '~/_services';
 
 const leaderboards = ref({});
-const loading = ref(true);
-const error = ref(null);
+const ready = ref(false);
 
 onBeforeMount(async () => {
-  try {
-    leaderboards.value = await fisherService.getLeaderboards();
-  } catch (err) {
-    error.value = err.message;
-  } finally {
-    loading.value = false;
-  }
+  leaderboards.value = await fisherService.getLeaderboards();
+  ready.value = true
 });
 
 const getMedalClass = (rank) => {
@@ -34,15 +28,7 @@ const leaderboardsData = [
   <div class="container">
     <h1 class="container__title">Le Kikimeter</h1>
     
-    <div v-if="loading" class="loading">
-      <p>Chargement des leaderboards...</p>
-    </div>
-
-    <div v-else-if="error" class="error">
-      <p>Erreur : {{ error }}</p>
-    </div>
-
-    <div v-else class="leaderboards-grid">
+    <div v-if="ready" class="leaderboards-grid">
       <div v-for="board in leaderboardsData" :key="board.key" class="leaderboard-card">
         <h2 class="leaderboard-card__title">{{ board.title }}</h2>
         
@@ -92,33 +78,6 @@ const leaderboardsData = [
     margin-bottom: 40px;
     color: white;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-  }
-}
-
-.loading,
-.error {
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 40px;
-  text-align: center;
-  backdrop-filter: blur(10px);
-  max-width: 600px;
-  margin: 0 auto;
-
-  p {
-    font-size: 16px;
-    color: rgba(255, 255, 255, 0.8);
-    font-weight: 500;
-  }
-}
-
-.error {
-  border-color: rgba(244, 67, 54, 0.3);
-  background: rgba(244, 67, 54, 0.1);
-
-  p {
-    color: #ff7043;
   }
 }
 
@@ -200,7 +159,7 @@ const leaderboardsData = [
 
   &.gold {
     border-left-color: $gold;
-    background: rgba($gold, 0.15);
+    background: rgba($gold, 0.30);
 
     .leaderboard-entry__rank {
       color: $gold;
@@ -213,7 +172,7 @@ const leaderboardsData = [
 
   &.silver {
     border-left-color: $silver;
-    background: rgba($silver, 0.15);
+    background: rgba($silver, 0.30);
 
     .leaderboard-entry__rank {
       color: $silver;
@@ -226,7 +185,7 @@ const leaderboardsData = [
 
   &.bronze {
     border-left-color: $bronze;
-    background: rgba($bronze, 0.15);
+    background: rgba($bronze, 0.30);
 
     .leaderboard-entry__rank {
       color: $bronze;
