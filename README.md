@@ -15,7 +15,7 @@ ArchiDexFishing works in synergy with the fishing game **[Lurk Bait Twitch Fishi
 4. [Frontend Features (Web App)](#-frontend-features-web-app)
 5. [Data Structure (MongoDB Atlas)](#data-structure)
 6. [Detection Format (Bot Details)](#-detection-format-bot-details)
-7. [Acknowledgements (Shoutout)](#-acknowledgements)
+7. [Acknowledgements (Shoutout)](#acknowledgements)
 8. [Project Status & Usage](#-project-status--usage)
 
 ---
