@@ -1,6 +1,6 @@
 # 🎣 ArchiDexFishing
 
-🇬🇧*[Lire cette documentation en anglais](./README.md)*
+🇬🇧 *[Lire cette documentation en anglais](./README.md)*
 
 > **Un projet fullstack interactif permettant aux viewers Twitch de pêcher, collectionner et suivre leurs Pokémon aquatiques en temps réel via un Pokédex personnel.**
 
