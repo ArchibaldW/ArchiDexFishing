@@ -150,6 +150,15 @@ Une fois le message parsé, un objet structuré est envoyé à l'API backend :
   }
 }
 ```
+
+---
+
+## <a id="remerciements"></a>🙏 Remerciements (Shoutout)
+
+Un grand merci à Jimauve pour m'avoir fourni la base de code initiale du bot Twitch. Son travail m'a permis de démarrer sur de solides fondations avant d'y greffer toute la logique métier spécifique à ArchiDexFishing (l'expression régulière, les succès, et la communication avec mon backend) ! 
+
+N'hésitez pas à aller découvrir sa [chaine Twitch](https://www.twitch.tv/jimauve)
+
 ---
 
 
