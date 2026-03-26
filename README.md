@@ -154,6 +154,14 @@ Once the message is parsed, a structured object is sent to the backend API:
 
 ---
 
+## <a id="acknowledgements"></a>🙏 Acknowledgements (Shoutout)
+
+A huge shoutout to Jimauve for providing the initial base code for the Twitch bot. Their work gave me a solid foundation to build upon before integrating all the custom ArchiDexFishing logic (the complex regex, the achievement system, and the backend communication)!
+
+Feel free to check out their **[Twitch channel](https://www.twitch.tv/jimauve)**
+
+---
+
 ## 🔒 Project Status & Usage
 
 This project was developed specifically for my own use and my own Twitch channel.
