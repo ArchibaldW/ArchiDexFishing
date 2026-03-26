@@ -1,6 +1,6 @@
 # 🎣 ArchiDexFishing
 
-🇬🇧 *[Read this documentation in French](./README.fr.md)*
+🇫🇷 *[Read this documentation in French](./README.fr.md)*
 
 > **An interactive full-stack project allowing Twitch viewers to catch, collect, and track their water-type Pokémon in real-time via a personal Pokédex.**
 
