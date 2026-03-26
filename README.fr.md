@@ -15,7 +15,8 @@ ArchiDexFishing fonctionne en synergie avec le jeu de pêche **[Lurk Bait Twitch
 4. [Fonctionnalités du Front (Application Web)](#fonctionnalites-du-front)
 5. [Structure des Données (MongoDB Atlas)](#structure-des-donnees)
 6. [Format de détection (Le Bot en détail)](#format-de-detection)
-7. [Statut du Projet & Utilisation](#statut-du-projet)
+7. [Remerciements](#remerciements)
+8. [Statut du Projet & Utilisation](#statut-du-projet)
 
 ---
 
