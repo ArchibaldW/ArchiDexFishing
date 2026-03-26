@@ -77,8 +77,8 @@ Competition takes center stage with **4 distinct rankings** to compare feats wit
 
 ---
 
-## 🗄️ Data Structure (MongoDB Atlas)
-<a id="data-structure"></a>
+## 🗄️ <a id="data-structure"></a> Data Structure (MongoDB Atlas)
+
 
 The backend relies on a **MongoDB** database hosted on Atlas. It contains reference collections built manually, which correspond exactly to the customized game's internal files.
 
