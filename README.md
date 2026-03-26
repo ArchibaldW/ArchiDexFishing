@@ -13,7 +13,7 @@ ArchiDexFishing works in synergy with the fishing game **[Lurk Bait Twitch Fishi
 2. [Project Architecture](#-project-architecture)
 3. [Technologies Used](#-technologies-used)
 4. [Frontend Features (Web App)](#-frontend-features-web-app)
-5. [Data Structure (MongoDB Atlas)](#-data-structure-mongodb-atlas)
+5. [Data Structure (MongoDB Atlas)](#data-structure)
 6. [Detection Format (Bot Details)](#-detection-format-bot-details)
 7. [Project Status & Usage](#-project-status--usage)
 
@@ -78,6 +78,7 @@ Competition takes center stage with **4 distinct rankings** to compare feats wit
 ---
 
 ## 🗄️ Data Structure (MongoDB Atlas)
+<a id="data-structure"></a>
 
 The backend relies on a **MongoDB** database hosted on Atlas. It contains reference collections built manually, which correspond exactly to the customized game's internal files.
 
