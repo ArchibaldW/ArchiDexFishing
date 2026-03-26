@@ -9,15 +9,18 @@ ArchiDexFishing fonctionne en synergie avec le jeu de pêche **[Lurk Bait Twitch
 ---
 
 ## 📑 Table des matières
-1. [Comment ça marche ?](#-comment-ça-marche-)
-2. [Fonctionnalités du Front (Application Web)](#-fonctionnalités-du-front-application-web)
-3. [Architecture du Projet](#-architecture-du-projet)
-4. [Technologies Utilisées](#-technologies-utilisées)
-5. [Installation & Démarrage](#-installation--démarrage)
+1. [Comment ça marche ?](#comment-ca-marche)
+2. [Architecture du Projet](#architecture-du-projet)
+3. [Technologies Utilisées](#technologies-utilisees)
+4. [Fonctionnalités du Front (Application Web)](#fonctionnalites-du-front)
+5. [Structure des Données (MongoDB Atlas)](#structure-des-donnees)
+6. [Format de détection (Le Bot en détail)](#format-de-detection)
+7. [Statut du Projet & Utilisation](#statut-du-projet)
 
 ---
 
 ## 🔄 Comment ça marche ?
+<a id="comment-ca-marche"></a>
 
 Le flux de données se déroule en 4 étapes clés :
 
@@ -29,6 +32,7 @@ Le flux de données se déroule en 4 étapes clés :
 ---
 
 ## 🏗 Architecture du Projet
+<a id="architecture-du-projet"></a>
 
 Le dépôt monorepo est divisé en trois dossiers principaux :
 
@@ -39,6 +43,7 @@ Le dépôt monorepo est divisé en trois dossiers principaux :
 ---
 
 ## 💻 Technologies Utilisées
+<a id="technologies-utilisees"></a>
 
 * **Frontend** : Vue.js, Nuxt.Js, JavaScript, SCSS
 * **Backend** : Node.js, Express, MongoDB
@@ -48,8 +53,9 @@ Le dépôt monorepo est divisé en trois dossiers principaux :
 ---
 
 ## ✨ Fonctionnalités du Front (Application Web)
+<a id="fonctionnalites-du-front"></a>
 
-L'application web est le véritable tableau de bord pour les viewers, offrant une expérience riche et détaillée :
+L'application web est le véritable tableau de bord pour viewers, offrant une expérience riche et détaillée :
 
 ### 📖 Pokédex personnel
 Visualisation de tous les Pokémon capturés par l'utilisateur (incluant les versions *shiny*). Pour inciter à la collection, **tous les Pokémon du jeu sont affichés, mais ceux qui n'ont pas encore été capturés apparaissent sous forme de silhouette noire**, rappelant le fameux *"Who's that Pokémon ?"*.
@@ -78,6 +84,7 @@ La compétition est à l'honneur avec **4 classements distincts** pour comparer 
 ---
 
 ## 🗄️ Structure des Données (MongoDB Atlas)
+<a id="structure-des-donnees"></a>
 
 Le backend s'appuie sur une base de données **MongoDB** hébergée sur Atlas. Elle contient des collections de référence constituées à la main, qui correspondent exactement aux fichiers internes du jeu customisé.
 
@@ -104,7 +111,7 @@ Cette collection liste les 230 Pokémon disponibles dans le jeu. Elle intègre u
   "tags": ["variant"],
   "type1": "psychic",
   "type2": "poison"
-},
+}
 ```
 *(Exemple d'un pokemon avec une variation)*
 
@@ -125,6 +132,7 @@ Tout comme les Pokémon, les succès sont pré-enregistrés dans la base. Le bac
 ---
 
 ## 🎣 Format de détection (Le Bot en détail)
+<a id="format-de-detection"></a>
 
 Le module `/bot` écoute les messages générés par **Lurk Bait** dans le chat Twitch lié à mon pseudo (ArchibaldWirslayd). Il utilise une expression régulière spécifique pour capter les annonces :
 
@@ -152,6 +160,8 @@ Une fois le message parsé, un objet structuré est envoyé à l'API backend :
 
 
 ## 🔒 Statut du Projet & Utilisation
+<a id="statut-du-projet"></a>
+
 Ce projet a été développé spécifiquement pour mon propre usage et ma propre chaîne Twitch.
 
 Par conséquent :
